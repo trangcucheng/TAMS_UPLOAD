@@ -1,0 +1,757 @@
+/*================================================================================
+	Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
+	Version: 2.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+.ant-table-thead .ant-table-cell {
+    // font-weight: 600;
+    text-align: center !important;
+    color: #fff !important;
+    background-color: #09A863 !important;
+}
+
+// .ant-table {
+// 	border: 1px solid black;
+// 	border-collapse: collapse;
+//   }
+
+//   /* Đối với viền của header */
+//   .ant-table-thead > tr > th {
+// 	border: 1px solid black;
+//   }
+.ant-table-thead>tr>th {
+    border-inline-end: 1px solid #b8b8b8 !important;
+}
+
+/* Đối với viền của các ô dữ liệu trong bảng */
+.ant-table-tbody>tr>td {
+    border-inline-end: 1px solid #b8b8b8 !important;
+}
+
+.ant-table-wrapper .ant-table-container table>thead>tr:first-child>*:first-child {
+    border-start-start-radius: 0px !important;
+}
+
+.ant-table-wrapper .ant-table-container table>thead>tr:first-child>*:last-child {
+    border-start-end-radius: 0px !important;
+}
+
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-summary>table>tfoot>tr>td {
+    border-inline-end: 1px solid #b8b8b8 !important;
+}
+
+.ant-table-wrapper .ant-table-tbody>tr>td {
+    // transition: background 0.2s,border-color 0.2s;
+    border-bottom: 1px solid #b8b8b8;
+    /* border-left: 1px solid #000; */
+}
+
+.ant-table-wrapper .ant-table-tbody>tr>td:first-child {
+    border-left: 1px solid #b8b8b8;
+}
+
+.ant-table-wrapper .ant-table-thead>tr>th {
+    // transition: background 0.2s,border-color 0.2s;
+    border-bottom: 1px solid #b8b8b8;
+    border-top: 1px solid #b8b8b8;
+}
+
+.ant-table-wrapper .ant-table-thead>tr>th:first-child {
+    border-left: 1px solid #b8b8b8;
+}
+
+.ant-table-wrapper .ant-table-thead>tr:second-child>th {
+    // transition: background 0.2s,border-color 0.2s;
+    border-bottom: 1px solid #b8b8b8;
+    border-top: 1px solid #b8b8b8;
+}
+
+.ant-table-wrapper .ant-table-thead>tr>th:first-child {
+    border-left: 1px solid #b8b8b8;
+}
+
+.ant-table-summary {
+    background-color: #f7f7f7;
+}
+
+.ant-table-summary .ant-table-cell {
+    border-bottom: 1px solid #b8b8b8 !important;
+    border-right: 1px solid #b8b8b8 !important;
+}
+
+.ant-table-summary .ant-table-cell:first-child {
+    border-left: 1px solid #b8b8b8;
+}
+
+.ant-btn-primary {
+    background-color: #09A863 !important;
+    border-radius: 5px;
+}
+
+.ant-btn-primary:disabled,
+.ant-btn-primary.ant-btn-disabled {
+    cursor: not-allowed;
+    border-color: #d9d9c9 !important;
+    color: rgba(0, 0, 0, 0.25) !important;
+    background: rgba(0, 0, 0, 0.04) !important;
+    box-shadow: none;
+}
+
+.ant-btn-primary.ant-btn-dangerous {
+    background: #ff4d4f !important;
+    box-shadow: 0 2px 0 rgba(255, 38, 5, 0.06);
+    color: white;
+
+}
+
+.ant-btn-primary.ant-btn-dangerous:disabled,
+.ant-btn-primary.ant-btn-dangerous.ant-btn-disabled {
+    cursor: not-allowed;
+    border-color: #d9d9c9 !important;
+    color: rgba(0, 0, 0, 0.25) !important;
+    background: rgba(0, 0, 0, 0.04) !important;
+    box-shadow: none;
+}
+
+.single-image .ant-btn {
+    width: 100% !important;
+}
+
+.single-image .ant-btn-text {
+    border-radius: 5px;
+}
+
+.swiper-autoheight,
+.swiper-autoheight .swiper-slide {
+    height: 100% !important;
+}
+
+.single-image {
+    height: 100% !important;
+}
+
+.navbar-floating .navbar-container:not(.main-menu-content) {
+    padding-left: 24px;
+}
+
+.product-small-image-wrapper {
+    margin-left: -24px;
+    padding-left: 24px;
+}
+
+.navbar-container :hover .swiper-button-prev {
+    visibility: visible;
+}
+
+.swiper-button-prev {
+    left: -30px !important;
+}
+
+.swiper-button-next {
+    right: -30px !important;
+}
+
+.menu-item,
+.menu-title {
+    display: inline !important;
+    word-wrap: break-word !important;
+    white-space: break-spaces !important;
+}
+
+.menu-item:hover {
+    overflow: visible;
+}
+
+.nav-item a {
+    display: flex !important;
+}
+
+// .nav-item > a > svg {
+//     width: 12px!important;
+//     height: 12px!important;
+// }
+
+.nav-item span:not(.user-name, .user-status) {
+    max-width: 80% !important;
+}
+
+// .nav-item span:not(.user-status) {
+//     max-width: 80%!important;
+// }
+
+.header-navbar {
+    margin-top: 1rem !important;
+}
+
+.content-area-wrapper {
+    margin-top: -1rem !important;
+}
+
+.nav-item button {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.user-nav {
+    min-width: 18% !important;
+}
+
+.redColor {
+    color: red;
+    font-size: 13px;
+    padding-left: 4px;
+}
+
+@media (min-width: 1440px) {
+    div.container-xxl {
+        width: auto !important;
+        max-width: auto !important;
+    }
+
+    .container-xxl {
+        max-width: 1920px !important;
+    }
+}
+
+.content-space-between {
+    justify-content: space-between;
+}
+
+.css-13cymwt-control,
+.select__control--menu-is-open,
+.select__control--is-focused {
+    border-radius: 6px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    align-content: center;
+}
+
+.form-label {
+    font-size: 14px !important;
+}
+
+.ant-table-cell {
+    padding: 9px 10px !important;
+}
+
+.swal2-success-line-long,
+.swal2-success-line-tip {
+    background-color: #09A863 !important;
+}
+
+.form-check {
+    min-width: 5rem !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.role-card>.ant-card-body {
+    padding: 0px !important;
+}
+
+.loader {
+    margin: auto;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #09a863;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    animation: spin 1s linear infinite;
+}
+
+.bigloader {
+    margin: auto;
+    margin-bottom: 2rem;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #09a863;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.buttonRight {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-check .ant-input {
+    height: 20px !important;
+}
+
+.red-icon {
+    stroke: red;
+    cursor: pointer;
+}
+
+.blue-icon {
+    stroke: #09A863;
+    cursor: pointer;
+}
+
+th {
+    color: #fff;
+}
+
+.textCenter {
+    text-align: center !important;
+}
+
+.loader-wrapper {
+    height: 8em;
+}
+
+.maintenance-icon {
+    font-size: 4rem;
+}
+
+.animationIcon {
+    right: 30px;
+    bottom: 10px;
+}
+
+// .btn-primary {
+//     width: 100px !important;
+// }
+
+.addBtn {
+    margin-bottom: 10px !important;
+    padding: 8px 15px !important;
+}
+
+.user-name {
+    max-width: 100% !important;
+}
+
+.css-13cymwt-control {
+    min-height: 34px !important;
+}
+
+form .col-6,
+.col-12 {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.saveBtn,
+.cancelBtn {
+    padding: 8px 15px !important;
+    width: 70px;
+}
+
+.mr-1 {
+    margin-right: 1rem;
+}
+
+.exportFileBtn {
+    padding: 8px 15px !important;
+    width: 90px;
+}
+
+// form .content-space-between {
+//     padding-left: 10px;
+//     padding-right: 10px;
+// }
+
+.modal-content {
+    background-color: #fff !important;
+}
+
+.permissTable tr th,
+.permissTable tr td:not(:first-child) {
+    color: #000;
+    text-align: center;
+}
+
+.listUser {
+    max-width: 1000px !important;
+}
+
+.is-invalid>.ant-select-selector {
+    border-color: #ff7879 !important
+}
+
+// .ant-select-selector:hover {
+//     border: 1px solid #d9d9d9 !important;
+// }
+
+.shadow-box {
+    margin: 20px;
+    /* Khoảng cách giữa khung và bóng đổ */
+    box-shadow: 0px 0px 10px 5px rgba(152, 152, 154, 0.5);
+}
+
+.customMenu {
+    background-color: #fff;
+}
+
+.subSystem {
+    margin-bottom: 1rem;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    margin: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 4px 0px 6px rgba(0, 0, 0, 0.1) !important;
+    background-color: rgba(223, 244, 243, 0.5) !important;
+}
+
+.subContainer {
+    margin-bottom: 1rem !important;
+    border-bottom: 1px solid #fff;
+    padding-top: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.subContainer:hover {
+    border-bottom-color: #09A863;
+    /* Thay đổi màu sắc của border-bottom */
+    background-color: rgba(0, 0, 0, 0.05);
+    transition: border-bottom-color 0.5s, background-color 0.5s;
+    /* Chỉ định transition cho các thuộc tính cụ thể */
+}
+
+.subContainer:hover::after {
+    width: 100%;
+    opacity: 1;
+}
+
+.subContainer::after {
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background-color: #09A863;
+    transform: translateX(-50%) scaleX(1.1);
+    /* Kết hợp cả hai hiệu ứng */
+    opacity: 0;
+    transition: width 0.3s, opacity 0.3s;
+    /* Chỉ định transition cho các thuộc tính cụ thể */
+    content: "";
+}
+
+.subContainer a.iconContainer {
+    height: 1.5rem !important;
+    width: 1.5rem !important;
+}
+
+.dayOff {
+    width: 100%;
+    background-color: #ffffff;
+    background-image: none;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d9d9d9;
+    border-radius: 6px;
+    transition: all 0.2s;
+    padding: 4px 11px;
+    color: rgba(0, 0, 0, 0.88);
+    font-size: 14px;
+    line-height: 1.5714285714285714;
+}
+
+.dayOff:focus {
+    border-color: #05663d;
+    box-shadow: 0 0 0 2px rgba(5, 145, 255, 0.1);
+    border-inline-end-width: 1px;
+    outline: 0;
+}
+
+#trainingPlanTable {
+    overflow-x: scroll !important;
+}
+
+.classRoomColumn {
+    display: flex !important;
+    /* flex-direction: row; */
+    justify-content: center !important;
+    height: 100% !important;
+    text-align: center !important;
+}
+
+.vertical-text {
+    writing-mode: vertical-rl;
+    /* vertical-rl là chế độ dọc từ phải sang trái, vertical-lr là chế độ từ trái sang phải */
+    text-orientation: upright;
+    /* Thay đổi hướng văn bản nếu cần */
+    white-space: nowrap;
+    /* Ngăn chặn từ bị ngắt dòng */
+}
+
+.labelCell {
+    width: 30%;
+    display: block;
+    text-align: start;
+    padding-left: 4px;
+}
+
+.valueCell {
+    width: 70%;
+    text-align: start;
+}
+
+.containerCell {
+    font-size: 13px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cell-of-table {
+    justify-content: center !important;
+}
+
+.numberTabs {
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #09A863;
+    margin-right: 10px;
+    font-size: 16px;
+    color: #fff;
+}
+
+.cell100 {
+    width: 130px !important;
+}
+
+.col-by-5 {
+    width: 18%;
+}
+
+#listClassRoom .ant-table-cell {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 0.5 !important;
+    padding-right: 0.5 !important;
+}
+
+.classRoomCol {
+    display: flex;
+    flex-direction: column;
+}
+
+.textWrap {
+    text-wrap: nowrap !important;
+}
+
+.customMb2 {
+    margin-bottom: 2rem !important;
+}
+
+.labelForm {
+    font-size: 15px;
+    font-weight: 500;
+    color: #000;
+}
+
+.inputForm {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #d8d6de;
+    height: 35px;
+    padding-left: 1rem;
+    outline: none;
+}
+
+#timeTable .ant-table-tbody tr:nth-child(6) td {
+    border-bottom: 2px solid #09A863 !important;
+}
+
+.col-by-4 {
+    width: 25% !important;
+}
+
+.bigloader {
+    margin: auto;
+    margin-bottom: 2rem;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #09a863;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loaderContainer {
+    margin-bottom: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+[dir] .main-menu.menu-light .navigation>li>ul li:not(.has-sub) {
+    margin-left: 2rem !important;
+}
+
+[dir=ltr] .main-menu.menu-light .navigation>li ul li>a {
+    padding: 6px 15px 6px 20px !important;
+}
+
+[dir=ltr] .main-menu.menu-light .navigation>li ul li:hover:not(:active) {
+    background-color: #e4e4e4;
+    border-radius: 4px;
+}
+
+[dir] .main-menu.menu-light .navigation li a:hover:not(:active) {
+    background-color: #e4e4e4;
+    border-radius: 4px;
+}
+
+.text-underline {
+    text-decoration: underline;
+}
+
+.survey-form .flatpickr-input {
+    // line-height: 1.7rem!important;
+    padding: 5px !important;
+}
+
+.count_notifi {
+    color: white;
+    background: red;
+    padding: 0 5px;
+    display: inline-block;
+    border-radius: 100px;
+    font-size: 11px;
+    position: absolute;
+    top: 0;
+}
+
+.work-year .css-1fdsijx-ValueContainer {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+}
+
+.work-year .css-1rv6cxx-control {
+    height: 35px !important;
+}
+
+// timetable
+.list_subjects .bg-secondary {
+    background-color: #09A863 !important;
+}
+
+#hvlqSchedule .ant-table-row-expand-icon {
+    display: none !important;
+}
+
+#notificationBGD {
+    color: #000 !important;
+}
+
+.bgd-navbar a:not(.iconContainer) svg {
+    color: #000 !important;
+    stroke: #000 !important;
+}
+
+.moodle-form-label {}
+
+.moodle-form-input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 8px;
+    marginTop: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.moodle-form-submit {
+    background-color: #09a863;
+    border: 1px solid #09a863;
+    padding: 5px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.navigation-header span {
+    font-weight: bold;
+    color: #09a863;
+    font-size: larger;
+}
+
+.select-custom {
+    flex: 1
+}
+
+.ant-input:hover {
+    border-color: #09a863 !important;
+}
+
+.ant-table-expanded-row-level-1:hover {
+    background-color: #c6eedc !important;
+}
+
+.css-t3ipsp-control {
+    border-color: hsl(0, 0%, 80%) !important;
+    border-width: 0 !important;
+}
+
+.highlighted-row {
+    background-color: yellow;
+}
+
+.ant-table-content .highlighted-row:hover {
+    background-color: yellow !important;
+}
+
+// .highlighted-row>td:hover {
+//     background: yellow !important;
+// }
+
+.spin i {
+    background-color: #fff !important;
+}
+
+.highlight-sentence {
+    color: red;
+}
+
+.highlight-theme {
+    background-color: yellow;
+    color: red;
+}
+
+.highlight-only-theme {
+    background-color: yellow;
+}
+
+.card-doc .ant-card-body {
+    padding: 0 !important;
+}
+
+.custom-tooltip {
+    line-height: 1.5 !important;
+}

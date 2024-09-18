@@ -1,0 +1,111 @@
+p {
+            line-height: 1.8; 
+        }
+        .custom-tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .custom-tooltip .tooltiptext {
+            visibility: visible; 
+            width: 8px;
+            color: #fff;
+            text-align: center;
+            border-radius: 3px;
+            padding: 2px 2px; 
+            position: absolute;
+            z-index: 1;
+            bottom: 100%; 
+            left: 0; 
+            opacity: 0.8; 
+            font-size: 10px;
+            width: 1rem;
+            height: 1rem;
+            line-height: 100%;
+        }
+
+        .custom-tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            border-width: 2px; 
+            border-style: solid;
+        }
+        .highlight {
+            line-height: 1; 
+            padding: 2px 0; 
+        }
+        .custom-tooltip .tooltiptext-0{
+            background-color: #FF3333; 
+        }
+        .custom-tooltip .tooltiptext-0::after{
+            border-color: #FF3333 transparent transparent transparent; 
+        }
+        .highlight-0{
+            background-color: rgba(255, 51, 51, 0.4); 
+        }
+
+        .custom-tooltip .tooltiptext-1{
+            background-color: #FF6600; 
+        }
+        .custom-tooltip .tooltiptext-1::after{
+            border-color: #FF6600 transparent transparent transparent; 
+        }
+        .highlight-1{
+            background-color:  rgba(255, 153, 0, 0.4); 
+        }
+
+        .custom-tooltip .tooltiptext-2{
+            background-color: #993399; 
+        }
+        .custom-tooltip .tooltiptext-2::after{
+            border-color: #993399 transparent transparent transparent; 
+        }
+        .highlight-2{
+            color: #000; 
+            background-color: #FF99FF; 
+        }
+
+        .custom-tooltip .tooltiptext-3{
+            background-color: #003300; 
+        }
+        .custom-tooltip .tooltiptext-3::after{
+            border-color: #003300 transparent transparent transparent; 
+        }
+        .highlight-3{
+            color: #000; 
+            background-color: #66CC99; 
+        }
+
+        .custom-tooltip .tooltiptext-4{
+            background-color: #0033FF;
+        }
+        .custom-tooltip .tooltiptext-4::after{
+            border-color: #0033FF transparent transparent transparent; 
+        }
+        .highlight-4{
+            background-color: rgba(102, 153, 255, 0.4); 
+        }
+
+        .custom-tooltip .tooltiptext-5{
+            background-color: #6600CC; 
+        }
+        .custom-tooltip .tooltiptext-5::after{
+            border-color: #6600CC transparent transparent transparent; 
+        }
+        .highlight-5{
+            background-color: rgba(102, 0, 204, 0.4); 
+        }
+
+          .custom-tooltip .tooltiptext-6{
+            background-color: #008800; 
+        }
+        .custom-tooltip .tooltiptext-6::after{
+            border-color: #008800 transparent transparent transparent; 
+        }
+        .highlight-6{
+            background-color: rgba(0, 136, 0, 0.4); 
+        }
