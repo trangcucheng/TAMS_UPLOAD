@@ -38,6 +38,7 @@ const DocumentByCategories = ({ colorForLabel, colors }) => {
     })
 
     const convertDataForChart = (apiData) => {
+        // const colorArr = colors?.filter((color, index) => index === )
         return {
             labels: apiData.map(item => item.name),  // Lấy tên các phần (labels)
             datasets: [
@@ -73,7 +74,13 @@ const DocumentByCategories = ({ colorForLabel, colors }) => {
     useEffect(() => {
         statisticByType().then((res) => {
             const apiData = res?.data ?? []
-            const data_ = convertDataForChart(apiData)
+            const apiData_ = apiData.sort((a, b) => {
+                if (a.id === 1) return 1   // Đẩy phần tử có id = 1 xuống cuối
+                if (b.id === 1) return -1 // Đẩy phần tử có id = 1 xuống cuối
+                return a.id - b.id      // Sắp xếp theo id
+            })
+
+            const data_ = convertDataForChart(apiData_)
             setDataChart(data_)
             const totalDocuments = getTotalDocuments(apiData)
             setTotal(totalDocuments)
@@ -87,6 +94,12 @@ const DocumentByCategories = ({ colorForLabel, colors }) => {
         plugins: {
             legend: {
                 position: 'bottom', // Vị trí của chú thích
+                labels: {
+                    boxWidth: 12, // Giảm kích thước hộp của chú thích
+                    font: {
+                        size: 10, // Giảm kích thước font của chú thích
+                    },
+                },
             },
             tooltip: {
                 enabled: true, // Hiển thị tooltip khi hover

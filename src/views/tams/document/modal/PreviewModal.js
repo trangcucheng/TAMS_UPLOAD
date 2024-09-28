@@ -57,15 +57,49 @@ const PreviewModal = ({ open, handleModal, data, listImport, files, setFiles, ge
         {index < listImport.length - 1 ? ', ' : ''} {/* Add comma if it's not the last file */}
       </span>
     ))
+  // Lấy danh sách các tệp thừa
+  const listThuaFile = files
+    ?.filter(file => !listImport.find(e => e[11] === file.name)) // Filter surplus files
+    .map((file, index) => (
+      <span key={index} style={{ color: 'blue' }}>
+        {file.name}
+        {index < files.length - 1 ? ', ' : ''} {/* Add comma if it's not the last file */}
+      </span>
+    ))
 
-
+  // const fileList = files.map((file, index) => (
+  //   <Col md='2' sm='6'>
+  //     <ListGroupItem key={`${file.name}-${index}`} className='d-flex align-items-start justify-content-between'>
+  //       <div className='file-details d-flex align-items-center'>
+  //         <div className='file-preview me-1'>{renderFilePreview(file)}</div>
+  //         <div>
+  //           <p className='file-name mb-0' style={{ marginRight: "0.2rem" }}>{file.name}</p>
+  //         </div>
+  //       </div>
+  //       <Button color='danger' outline size='sm' className='btn-icon' onClick={() => handleRemoveFile(file)}>
+  //         <X size={14} />
+  //       </Button>
+  //     </ListGroupItem>
+  //   </Col>
+  // ))
   const fileList = files.map((file, index) => (
-    <Col md='2' sm='6'>
-      <ListGroupItem key={`${file.name}-${index}`} className='d-flex align-items-start justify-content-between'>
+    <Col md='2' sm='6' key={`${file.name}-${index}`} className='mb-3'>
+      <ListGroupItem className='d-flex align-items-start justify-content-between' style={{ padding: '0.5rem', border: '1px solid #ddd', borderRadius: '5px' }}>
         <div className='file-details d-flex align-items-center'>
-          <div className='file-preview me-1'>{renderFilePreview(file)}</div>
-          <div>
-            <p className='file-name mb-0' style={{ marginRight: "0.2rem" }}>{file.name}</p>
+          <div className='file-preview'><FileText size='28' /></div>
+          <div
+            className='file-name-container'
+            style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+            title={`${file.name}`}
+          >
+            <p
+              className='file-name mb-0'
+              style={{
+                width: "7.5rem",
+                overflow: "hidden",
+                textOverflow: "ellipsis"
+              }}
+            >{file.name}</p>
           </div>
         </div>
         <Button color='danger' outline size='sm' className='btn-icon' onClick={() => handleRemoveFile(file)}>
@@ -74,6 +108,7 @@ const PreviewModal = ({ open, handleModal, data, listImport, files, setFiles, ge
       </ListGroupItem>
     </Col>
   ))
+
 
   const handleRemoveAllFiles = () => {
     setFiles([])
@@ -120,7 +155,10 @@ const PreviewModal = ({ open, handleModal, data, listImport, files, setFiles, ge
             {files.length ? (
               <Fragment>
                 {
-                  listThieuFile && <span>Thiếu file của các tài liệu: {listThieuFile}</span>
+                  listThieuFile && <p>Thiếu file của các tài liệu: {listThieuFile}</p>
+                }
+                {
+                  listThuaFile && <p>Trong thư mục thừa các tài liệu: {listThuaFile}</p>
                 }
                 <ListGroup className='my-2' style={{ height: '500px', overflowX: 'hidden', overflowY: 'auto' }}>
                   <span className="mb-1">Danh sách tài liệu được tải lên:</span>
