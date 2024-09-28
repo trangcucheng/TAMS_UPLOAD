@@ -15,13 +15,10 @@ import { setListDataImport } from '../../../apps/ecommerce/store'
 // import { ACTION_METHOD_TYPE } from '../../../utils/constant'
 
 const PreviewModal = ({ open, handleModal, data, listImport, files, setFiles, getData }) => {
-  const dispatch = useDispatch()
   // ** State
-  const { listDataImport } = useSelector(state => state.ecommerce)
-  const listImport_ = listImport ?? listDataImport
   const handleClose = () => {
     handleModal()
-    setFiles([])
+    // setFiles([])
   }
   const CloseBtn = <X className='cursor-pointer' size={15} onClick={e => handleClose()} />
 
@@ -52,12 +49,12 @@ const PreviewModal = ({ open, handleModal, data, listImport, files, setFiles, ge
       return `${(Math.round(size / 100) / 10).toFixed(1)} kb`
     }
   }
-  const listThieuFile = listImport_
+  const listThieuFile = listImport
     ?.filter(e => !files.find(file => file.name === e[11])) // Filter missing files
     .map((e, index) => (
       <span key={index} style={{ color: 'red' }}>
         {e[11]}
-        {index < listImport_.length - 1 ? ', ' : ''} {/* Add comma if it's not the last file */}
+        {index < listImport.length - 1 ? ', ' : ''} {/* Add comma if it's not the last file */}
       </span>
     ))
 
@@ -68,7 +65,7 @@ const PreviewModal = ({ open, handleModal, data, listImport, files, setFiles, ge
         <div className='file-details d-flex align-items-center'>
           <div className='file-preview me-1'>{renderFilePreview(file)}</div>
           <div>
-            <p className='file-name mb-0'>{file.name}</p>
+            <p className='file-name mb-0' style={{ marginRight: "0.2rem" }}>{file.name}</p>
           </div>
         </div>
         <Button color='danger' outline size='sm' className='btn-icon' onClick={() => handleRemoveFile(file)}>
@@ -86,11 +83,11 @@ const PreviewModal = ({ open, handleModal, data, listImport, files, setFiles, ge
     for (let i = 0; i < files.length; i++) {
       formdata.append("files", files[i])
     }
-    formdata.append('dbName', localStorage.getItem('dbName'))
-    const res = await uploadZip(formdata)
-    setFiles([])
-    dispatch(setListDataImport([]))
-    responseResultHelper(res, handleModal, null, ACTION_METHOD_TYPE.UPLOADZIP)
+    // formdata.append('dbName', localStorage.getItem('dbName'))
+    // const res = await uploadZip(formdata)
+    // setFiles([])
+    // dispatch(setListDataImport([]))
+    // responseResultHelper(res, handleModal, null, ACTION_METHOD_TYPE.UPLOADZIP)
     getData()
   }
   return (
@@ -133,10 +130,11 @@ const PreviewModal = ({ open, handleModal, data, listImport, files, setFiles, ge
 
                 </ListGroup>
                 <div className='d-flex justify-content-end'>
-                  <Button className='me-1' color='danger' outline onClick={handleRemoveAllFiles}>
+                  {/* <Button className='me-1' color='danger' outline onClick={handleRemoveAllFiles}>
                     Xóa tất cả
-                  </Button>
-                  <Button color='primary' onClick={handleUpFiles}>Lưu </Button>
+                  </Button> */}
+                  {/* <Button color='primary' onClick={handleUpFiles}>Lưu </Button> */}
+                  <Button color='primary' onClick={handleModal}>Xác nhận </Button>
                 </div>
               </Fragment>
             ) : null}

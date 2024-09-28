@@ -19,7 +19,14 @@ import { toDateString } from '../../../../utility/Utils'
 // import { kiemTraNganh, taoNganhDaiHoc, taoNhieuNganhDaiHoc } from '../../../../api/nganhDaiHoc'
 import { setListDataImport } from '../../../apps/ecommerce/store'
 import dayjs from "dayjs"
-const ImportModal = ({ open, getData, handleModal, listImport, loading, setLoading }) => {
+const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) => {
+    console.log(listImport, "listImport")
+
+    if (!listImport && (listImport.length = 0)) {
+        if (fileInputRef.current) {
+            fileInputRef.current.value = null
+        }
+    }
     // ** State
     // ** Custom close btn
     // const [listTDH, setListTDH] = useState(listTDHda)
@@ -31,6 +38,13 @@ const ImportModal = ({ open, getData, handleModal, listImport, loading, setLoadi
     const [dataImport, setDataImport] = useState([])
     const [disabled, setDisable] = useState(true)
     const listColumn = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
+    useEffect(() => {
+
+    }, [listImport])
+    const handleModal_ = () => {
+        setDataImport([])
+        handleModal()
+    }
     const columnsErr = [
         {
             title: 'Lỗi',
@@ -53,6 +67,7 @@ const ImportModal = ({ open, getData, handleModal, listImport, loading, setLoadi
         setIsEdit(false)
         setInfo(null)
         // handleReset()
+        setDataImport([])
     }
     const handleEdit = (record) => {
         setInfo(record)
@@ -190,7 +205,7 @@ const ImportModal = ({ open, getData, handleModal, listImport, loading, setLoadi
             ),
         },
     ]
-    const CloseBtn = <X className='cursor-pointer' size={15} onClick={handleModal} />
+    const CloseBtn = <X className='cursor-pointer' size={15} onClick={handleModal_} />
     const chunk = (arr, size) => Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => arr.slice((i * size), (size * (i + 1))))
 
     //
@@ -305,23 +320,19 @@ const ImportModal = ({ open, getData, handleModal, listImport, loading, setLoadi
     useEffect(() => {
         const errs = checkErr(listImport)
         setListErr(errs)
-    }, [])
-    const handleConfirm = () => {
-        dispatch(setListDataImport(listImport))
-        handleModal()
-    }
+    }, [listImport])
 
     return (
         <Modal
             isOpen={open}
-            toggle={handleModal}
+            toggle={handleModal_}
             contentClassName='pt-0'
             className='modal-xl'
         >
-            <ModalHeader className='mb-1' toggle={handleModal}>
+            <ModalHeader className='mb-1' toggle={handleModal_}>
                 <h5 className='modal-title'>Danh sách tài liệu</h5>
                 {
-                    listErr.length > 0 ? <span style={{ color: 'red' }}>File nhập có lỗi! Vui lòng kiểm tra lại</span> : <span style={{ color: 'green' }}>File đúng định dạng! Vui lòng kiểm tra lại thông tin trước khi lưu</span>
+                    listImport?.length === 0 ? <span style={{ color: 'red' }}>File nhập rỗng! Vui lòng kiểm tra lại</span> : (listErr.length > 0 ? <span style={{ color: 'red' }}>File nhập có lỗi! Vui lòng kiểm tra lại</span> : <span style={{ color: 'green' }}>File đúng định dạng! Vui lòng kiểm tra lại thông tin trước khi lưu</span>)
                 }
             </ModalHeader>
             {
@@ -334,24 +345,26 @@ const ImportModal = ({ open, getData, handleModal, listImport, loading, setLoadi
                         columns={columnsErr}
                         dataSource={listErr}
                     />
-                </div> : <div className='' style={{ marginRight: '20px', marginLeft: '20px', height: '700px', overflow: 'auto' }}>
-                    <Table
-                        // noHeader
-                        // striped
-                        // className='react-dataTable'
-                        bordered
-                        columns={columnsData}
-                        dataSource={dataImport}
-                    />
-                </div>
+                </div> : (
+                    dataImport.length > 0 && <div className='' style={{ marginRight: '20px', marginLeft: '20px', height: '700px', overflow: 'auto' }}>
+                        <Table
+                            // noHeader
+                            // striped
+                            // className='react-dataTable'
+                            bordered
+                            columns={columnsData}
+                            dataSource={dataImport}
+                        />
+                    </div>
+                )
             }
             <ModalBody className='flex-grow-1'>
-                <Button className='me-1' color='primary' disabled={disabled} onClick={handleConfirm}>
+                <Button className='me-1' color='primary' disabled={disabled} onClick={handleModal_}>
                     Xác nhận
                 </Button>
-                <Button color='secondary' onClick={handleModal} outline>
+                {/* <Button color='secondary' onClick={handleModal} outline>
                     Hủy
-                </Button>
+                </Button> */}
             </ModalBody>
             {
                 info && <EditModal

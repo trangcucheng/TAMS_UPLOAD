@@ -12,3 +12,9 @@ export const postCheckingDocumentVersion = async (body) => {
     const res = await API_FormData.post(uri, body)
     return res
 }
+
+export const postFromExcel = async (body) => {
+    const uri = `/document/import-from-excel`
+    const res = await API_FormData.post(uri, body)
+    return res
+}

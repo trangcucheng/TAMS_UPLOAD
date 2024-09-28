@@ -60,7 +60,8 @@ export const appEcommerceSlice = createSlice({
     timeTable: [],
     schoolYear: {},
     selectedYear: 0,
-    listDataImport: []
+    listDataImport: [],
+    courseId: null
   },
   reducers: {
     setSelectedRole: (state, action) => {
@@ -71,6 +72,15 @@ export const appEcommerceSlice = createSlice({
     },
     getSelectedRole: (state) => {
       return state.roleId
+    },
+    setSelectedCourse: (state, action) => {
+      state.courseId = action.payload
+    },
+    clearSelectedCourse: (state) => {
+      state.courseId = null
+    },
+    getSelectedCourse: (state) => {
+      return state.courseId
     },
     setTimetable: (state, action) => {
       state.timeTable = action.payload
@@ -127,6 +137,6 @@ export const appEcommerceSlice = createSlice({
       })
   }
 })
-export const { setSelectedRole, clearSelectedRole, getSelectedRole, setTimetable, clearTimetable, getTimetable, setSchoolYear, getSchoolYear, clearSchoolYear, setSelectedYear, clearSelectedYear, getSelectedYear, setListDataImport, clearListDataImport, getListDataImport } = appEcommerceSlice.actions
+export const { setSelectedRole, clearSelectedRole, getSelectedRole, setSelectedCourse, clearSelectedCourse, getSelectedCourse, setTimetable, clearTimetable, getTimetable, setSchoolYear, getSchoolYear, clearSchoolYear, setSelectedYear, clearSelectedYear, getSelectedYear, setListDataImport, clearListDataImport, getListDataImport } = appEcommerceSlice.actions
 
 export default appEcommerceSlice.reducer

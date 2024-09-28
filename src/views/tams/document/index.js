@@ -75,6 +75,10 @@ const Document = () => {
     const [files, setFiles] = useState([])
     const [modalPreview, setModalPreview] = useState(false)
     const [fileExcel, setFileExcel] = useState()
+    const [isAddExcel, setIsAddExcel] = useState(false)
+    const handleModalAddExcel = () => {
+        setIsAddExcel(!isAddExcel)
+    }
 
     const getAllDataPromises = async () => {
         const coursePromise = getCourse({ params: { page: 1, perPage: 10, search: '' } })
@@ -379,7 +383,8 @@ const Document = () => {
     }
     const onImportFileClick = () => {
         // `current` points to the mounted file input element
-        inputFile.current.click()
+        // inputFile.current.click()
+        setIsAddExcel(true)
     }
     const onImportFolder = async () => {
         if (listDataImport?.length === 0 || !listDataImport) {
@@ -447,9 +452,9 @@ const Document = () => {
                             <DropdownItem className='w-100' onClick={onImportFileClick}>
                                 <span className='align-middle ms-50'>Nhập danh sách tài liệu từ file excel</span>
                             </DropdownItem>
-                            <DropdownItem className='w-100' onClick={onImportFolder}>
+                            {/* <DropdownItem className='w-100' onClick={onImportFolder}>
                                 <span className='align-middle ms-50'>Tải tài liệu từ thư mục</span>
-                            </DropdownItem>
+                            </DropdownItem> */}
                         </DropdownMenu>
                     </UncontrolledButtonDropdown>
                 </Col>
@@ -599,6 +604,14 @@ const Document = () => {
                 currentPage={currentPage}
                 rowsPerPage={rowsPerPage}
             />
+            <SelectCourseModal
+                open={isAddExcel}
+                handleModal={handleModalAddExcel}
+                getData={getData}
+                currentPage={currentPage}
+                rowsPerPage={rowsPerPage}
+                // file
+            />
             {
                 info && <EditModal
                     open={isEdit}
@@ -609,9 +622,9 @@ const Document = () => {
                     rowsPerPage={rowsPerPage}
                 />
             }
-            {
+            {/* {
                 listImport && <ImportModal open={modalImportFile} getData={getData} handleModal={handleModalImportFile} listImport={listImport} loading={loading} setLoading={setLoading}></ImportModal>
-            }
+            } */}
             {
                 files && <PreviewModal open={modalPreview} getData={getData} handleModal={handleModalPreview} listImport={listImport} loading={loading} setLoading={setLoading} files={files} setFiles={setFiles} fileExcel={fileExcel}></PreviewModal>
             }
@@ -623,5 +636,6 @@ const AddNewModal = React.lazy(() => import("./modal/AddNewModal"))
 const EditModal = React.lazy(() => import("./modal/EditModal"))
 const ImportModal = React.lazy(() => import("./modal/ImportModal"))
 const PreviewModal = React.lazy(() => import("./modal/PreviewModal"))
+const SelectCourseModal = React.lazy(() => import("./modal/modalSelectCourse"))
 
 export default Document 
