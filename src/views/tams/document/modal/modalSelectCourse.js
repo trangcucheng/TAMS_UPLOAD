@@ -108,7 +108,6 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         // Đọc file và xử lý sau đó
         readXlsxFile(selectedFile).then((rows) => {
             const temp = rows.slice(4) // Cắt mảng từ hàng bắt đầu
-
             setListImport(temp) // Lưu danh sách sau khi xử lý
             setModalImportFile(true) // Mở modal hiển thị kết quả import
 
