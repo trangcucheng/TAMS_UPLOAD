@@ -303,14 +303,35 @@ const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) =
             data.push(infoOneRow)
         })
         if (temp.length === 0) {
-            setDisable(false)
             setDataImport(data)
+            return {
+                key: "data",
+                value: data
+            }
         }
-        return temp
+        return {
+            key: "errors",
+            value: temp
+        }
     }
     useEffect(() => {
-        const errs = checkErr(listImport)
-        setListErr(errs)
+        const { key, value } = checkErr(listImport)
+        console.log(key, value)
+        if (key === "data") {
+
+            if (value?.length === 0) {
+                setDisable(true)
+            } else {
+                setDisable(false)
+                console.log("đâu")
+                setDataImport(value)
+            }
+        }
+        if (key === "errors") {
+            setListErr(value)
+        }
+        // if (errs?.key === "data" && errs?.value?.length === 0) {
+        // }
     }, [listImport])
 
     return (

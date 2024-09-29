@@ -91,15 +91,8 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         const file = event.target.files[0]
         setFileExcel(file)
         const startIndex = 4
-        // setValue('file', file) // Cập nhật giá trị vào form
         readXlsxFile(file).then((rows) => {
-            // const temp = []
-            // rows.forEach((item, index) => {
-            //     if (index >= startIndex) {
-            //         temp.push(item)
-            //     }
-            // })
-            const temp = rows?.slice(3)
+            const temp = rows?.slice(4)
             setListImport(temp)
             setModalImportFile(true)
         }).catch(error => {
@@ -163,17 +156,14 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     const handleChangeFolder = (event) => {
         const fileList = event.target.files
         const fileArray = Array.from(fileList)
-        // setValue('folder', fileArray) // Cập nhật giá trị vào form
 
         setFiles(fileArray)
 
-        // Hiện modal preview ở đây
         setModalPreview(true)
 
-        // Reset lại input file
-        if (folderInputRef.current) {
-            folderInputRef.current.value = undefined // Reset giá trị input
-        }
+        // if (folderInputRef.current) {
+        //     folderInputRef.current.value = undefined // Reset giá trị input
+        // }
     }
 
     return (
@@ -193,20 +183,25 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                                 listImport?.length > 0 && <small style={{ color: "#09a863", cursor: "pointer" }} onClick={() => setModalImportFile(true)}>Chi tiết tài liệu</small>
                             }
                         </div>
-                        {/* <Controller
+                        <Controller
                             name='file'
                             control={control}
-                            render={({ field }) => ( */}
-                        <Input id='file'
-                            type='file'
-                            placeholder='Chọn tài liệu'
-                            ref={fileInputRef}
-                            invalid={errors.file && true} onChange={(event) => {
-                                handleChangeFile(event)
-                                // field.onChange(event)
-                            }} />
-                        {/* )}
-                        /> */}
+                            value={undefined}
+                            render={({ field }) => (
+                                <Input
+                                    {...field}
+                                    id='file'
+                                    type='file'
+                                    placeholder='Chọn tài liệu'
+                                    ref={fileInputRef}
+                                    value={undefined}
+                                    invalid={errors.file && true}
+                                    onChange={(event) => {
+                                        handleChangeFile(event)
+                                        // field.onChange(event)
+                                    }} />
+                            )}
+                        />
                         {errors.file && <FormFeedback>{errors.file.message}</FormFeedback>}
                     </Col>
                     <Col xs={12}>
@@ -218,27 +213,29 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                                 files?.length > 0 && <small style={{ color: "#09a863", cursor: "pointer" }} onClick={() => setModalPreview(true)}>Chi tiết các tệp tải lên</small>
                             }
                         </div>
-                        {/* <Controller
+                        <Controller
                             name='folder'
                             control={control}
-                            render={({ field }) => ( */}
-                        <Input
-                            // {...field}
-                            id='folder'
-                            type='file'
-                            webkitdirectory="true"
-                            directory=""
-                            multiple
-                            ref={folderInputRef} // Sử dụng ref để truy cập input
-                            placeholder='Chọn thư mục'
-                            invalid={errors.folder && true}
-                            onChange={(event) => {
-                                handleChangeFolder(event)
-                                // field.onChange(event) // Gọi field.onChange để cập nhật form state
-                            }}
+                            value={undefined}s
+                            render={({ field }) => (
+                                <Input
+                                    {...field}
+                                    id='folder'
+                                    type='file'
+                                    value={undefined}
+                                    webkitdirectory="true"
+                                    directory=""
+                                    multiple
+                                    ref={folderInputRef} // Sử dụng ref để truy cập input
+                                    placeholder='Chọn thư mục'
+                                    invalid={errors.folder && true}
+                                    onChange={(event) => {
+                                        handleChangeFolder(event)
+                                        // field.onChange(event) // Gọi field.onChange để cập nhật form state
+                                    }}
+                                />
+                            )}
                         />
-                        {/* )}
-                        /> */}
                         {errors.folder && <FormFeedback>{errors.folder.message}</FormFeedback>}
                     </Col>
                     {/* <span style={{ color: 'red' }}>
