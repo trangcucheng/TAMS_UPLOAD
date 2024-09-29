@@ -80,50 +80,6 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
 
     const handleModalPreview = () => setModalPreview(!modalPreview)
 
-    const getAllDataPromises = async () => {
-        try {
-            const coursePromise = getCourse({ params: { page: 1, perPage: 10, search: '' } })
-            const promises = [coursePromise]
-            const results = await Promise.allSettled(promises)
-
-            // Tạo mảng để lưu trữ các course thành công
-            const courses = []
-
-            results.forEach((result, index) => {
-                if (result.status === 'fulfilled') {
-                    // Xử lý kết quả thành công
-                    const courseRes = result.value
-                    const formattedCourses = courseRes?.data?.map((res) => ({
-                        value: res.id,
-                        label: `${res.name}`,
-                    }))
-
-                    courses.push(...formattedCourses)
-                } else {
-                    console.error(`Lỗi trong promise ${index}:`, result.reason)
-                }
-            })
-
-            // Chỉ gọi setListCourse một lần sau khi hoàn tất xử lý
-            setListCourse(
-                courses.sort((a, b) => {
-                    if (a.value === 1) return -1 // Đưa phần tử có id = 1 lên đầu
-                    if (b.value === 1) return 1 // Đưa phần tử có id = 1 lên đầu
-                    return 0 // Giữ nguyên thứ tự của các phần tử còn lại
-                })
-            )
-        } catch (error) {
-            console.error('Lỗi khi gọi API:', error)
-            setListCourse(null)
-        }
-    }
-
-    // useEffect(() => {
-    //     if (open) {
-    //         getAllDataPromises()
-    //     }
-    // }, [open])
-
     const handleCloseModal = () => {
         handleModal()
         reset()
@@ -239,9 +195,9 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                             <Label className='form-label' for='file'>
                                 Danh sách tài liệu <span style={{ color: 'red' }}>(*)</span>
                             </Label>
-                            {
+                            {/* {
                                 listImport?.length > 0 && <small style={{ color: "#09a863", cursor: "pointer" }} onClick={() => setModalImportFile(true)}>Chi tiết tài liệu</small>
-                            }
+                            } */}
                         </div>
                         <Controller
                             name='file'
@@ -264,9 +220,9 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                             <Label className='form-label' for='folder'>
                                 Thư mục tài liệu <span style={{ color: 'red' }}>(*)</span>
                             </Label>
-                            {
+                            {/* {
                                 files?.length > 0 && <small style={{ color: "#09a863", cursor: "pointer" }} onClick={() => setModalPreview(true)}>Chi tiết các tệp tải lên</small>
-                            }
+                            } */}
                         </div>
                         <Controller
                             name='folder'
