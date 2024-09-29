@@ -20,11 +20,11 @@ import { toDateString } from '../../../../utility/Utils'
 import { setListDataImport } from '../../../apps/ecommerce/store'
 import dayjs from "dayjs"
 const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) => {
-    if (!listImport && (listImport.length = 0)) {
-        if (fileInputRef.current) {
-            fileInputRef.current.value = null
-        }
-    }
+    // if (!listImport && (listImport.length = 0)) {
+    //     if (fileInputRef.current) {
+    //         fileInputRef.current.value = null
+    //     }
+    // }
     // ** State
     // ** Custom close btn
     // const [listTDH, setListTDH] = useState(listTDHda)
@@ -36,11 +36,9 @@ const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) =
     const [dataImport, setDataImport] = useState([])
     const [disabled, setDisable] = useState(true)
     const listColumn = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
-    useEffect(() => {
 
-    }, [listImport])
     const handleModal_ = () => {
-        setDataImport([])
+        // setDataImport([])
         handleModal()
     }
     const columnsErr = [
@@ -177,31 +175,31 @@ const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) =
             dataIndex: 'fileName',
             // selector: row => row.fileName,
         },
-        {
-            title: "Thao tác",
-            width: 100,
-            align: "center",
-            render: (record) => (
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Tooltip placement="top" title="Chỉnh sửa">
-                        <EditOutlined
-                            style={{ color: "#09A863", cursor: 'pointer', marginRight: '1rem' }}
-                            onClick={() => handleEdit(record)}
-                        />
-                    </Tooltip>
-                    <Popconfirm
-                        title="Bạn chắc chắn xóa?"
-                        onConfirm={() => handleDelete(record.id)}
-                        cancelText="Hủy"
-                        okText="Đồng ý"
-                    >
-                        <Tooltip placement="top" title="Xóa">
-                            <DeleteOutlined style={{ color: "red", cursor: 'pointer' }} id={`tooltip_delete${record.ID}`} />
-                        </Tooltip>
-                    </Popconfirm>
-                </div>
-            ),
-        },
+        // {
+        //     title: "Thao tác",
+        //     width: 100,
+        //     align: "center",
+        //     render: (record) => (
+        //         <div style={{ display: "flex", justifyContent: "center" }}>
+        //             <Tooltip placement="top" title="Chỉnh sửa">
+        //                 <EditOutlined
+        //                     style={{ color: "#09A863", cursor: 'pointer', marginRight: '1rem' }}
+        //                     onClick={() => handleEdit(record)}
+        //                 />
+        //             </Tooltip>
+        //             <Popconfirm
+        //                 title="Bạn chắc chắn xóa?"
+        //                 onConfirm={() => handleDelete(record.id)}
+        //                 cancelText="Hủy"
+        //                 okText="Đồng ý"
+        //             >
+        //                 <Tooltip placement="top" title="Xóa">
+        //                     <DeleteOutlined style={{ color: "red", cursor: 'pointer' }} id={`tooltip_delete${record.ID}`} />
+        //                 </Tooltip>
+        //             </Popconfirm>
+        //         </div>
+        //     ),
+        // },
     ]
     const CloseBtn = <X className='cursor-pointer' size={15} onClick={handleModal_} />
     const chunk = (arr, size) => Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => arr.slice((i * size), (size * (i + 1))))

@@ -46,8 +46,10 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         //     "Yêu cầu chọn file",
         //     value => value !== null && value !== ''
         // ),
-        file: yup.mixed().required("Yêu cầu chọn file"),
-        folder: yup.mixed().required("Vui lòng chọn thư mục"),
+        // file: yup.mixed().required("Yêu cầu chọn file"),
+        // folder: yup.mixed().required("Vui lòng chọn thư mục"),
+        file: yup.mixed(),
+        folder: yup.mixed()
     })
 
     // ** Hooks
@@ -80,50 +82,6 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
 
     const handleModalPreview = () => setModalPreview(!modalPreview)
 
-    const getAllDataPromises = async () => {
-        try {
-            const coursePromise = getCourse({ params: { page: 1, perPage: 10, search: '' } })
-            const promises = [coursePromise]
-            const results = await Promise.allSettled(promises)
-
-            // Tạo mảng để lưu trữ các course thành công
-            const courses = []
-
-            results.forEach((result, index) => {
-                if (result.status === 'fulfilled') {
-                    // Xử lý kết quả thành công
-                    const courseRes = result.value
-                    const formattedCourses = courseRes?.data?.map((res) => ({
-                        value: res.id,
-                        label: `${res.name}`,
-                    }))
-
-                    courses.push(...formattedCourses)
-                } else {
-                    console.error(`Lỗi trong promise ${index}:`, result.reason)
-                }
-            })
-
-            // Chỉ gọi setListCourse một lần sau khi hoàn tất xử lý
-            setListCourse(
-                courses.sort((a, b) => {
-                    if (a.value === 1) return -1 // Đưa phần tử có id = 1 lên đầu
-                    if (b.value === 1) return 1 // Đưa phần tử có id = 1 lên đầu
-                    return 0 // Giữ nguyên thứ tự của các phần tử còn lại
-                })
-            )
-        } catch (error) {
-            console.error('Lỗi khi gọi API:', error)
-            setListCourse(null)
-        }
-    }
-
-    useEffect(() => {
-        if (open) {
-            getAllDataPromises()
-        }
-    }, [open])
-
     const handleCloseModal = () => {
         handleModal()
         reset()
@@ -135,12 +93,13 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         const startIndex = 4
         // setValue('file', file) // Cập nhật giá trị vào form
         readXlsxFile(file).then((rows) => {
-            const temp = []
-            rows.forEach((item, index) => {
-                if (index > startIndex) {
-                    temp.push(item)
-                }
-            })
+            // const temp = []
+            // rows.forEach((item, index) => {
+            //     if (index >= startIndex) {
+            //         temp.push(item)
+            //     }
+            // })
+            const temp = rows?.slice(3)
             setListImport(temp)
             setModalImportFile(true)
         }).catch(error => {
@@ -157,42 +116,48 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
 
     const onSubmit = (data) => {
         setLoadingAdd(true)
-        // const files_ = files
         const formData = new FormData()
         formData.append('excel', fileExcel)
         formData.append('courseId', 1)
-        files?.map((file) => {
+
+        // Nếu files là mảng, hãy sử dụng forEach để thêm vào formData
+        files?.forEach((file) => {
             formData.append('files', file)
         })
-        postFromExcel(formData).then(result => {
-            if (result.status === 'success') {
-                getData()
-                Swal.fire({
-                    title: "Thêm mới tài liệu thành công",
-                    // text: "Vui lòng thử lại sau!",
-                    icon: "success",
-                    customClass: {
-                        confirmButton: "btn btn-success"
-                    }
-                })
-            } else {
-                Swal.fire({
-                    title: "Thêm mới tài liệu thất bại",
-                    text: "Vui lòng thử lại sau!",
-                    icon: "error",
-                    customClass: {
-                        confirmButton: "btn btn-danger"
-                    }
-                })
-            }
-            setFileExcel()
-            setFiles()
-            handleCloseModal()
-        }).catch(error => {
-            console.log(error)
-        }).finally(() => {
-            setLoadingAdd(false)
-        })
+
+        // Kiểm tra hàm postFromExcel để đảm bảo không có lỗi import
+        postFromExcel(formData)
+            .then((result) => {
+                if (result.status === 'success') {
+                    getData()
+                    Swal.fire({
+                        title: "Thêm mới tài liệu thành công",
+                        icon: "success",
+                        customClass: {
+                            confirmButton: "btn btn-success"
+                        }
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Thêm mới tài liệu thất bại",
+                        text: "Vui lòng thử lại sau!",
+                        icon: "error",
+                        customClass: {
+                            confirmButton: "btn btn-danger"
+                        }
+                    })
+                }
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+            .finally(() => {
+                setLoadingAdd(false)
+                setFileExcel(null) // Sử dụng giá trị thích hợp
+                setFiles([])       // Sử dụng giá trị thích hợp
+                handleCloseModal()
+                setListImport([]) // Sử dụng giá trị thích hợp để reset
+            })
     }
 
     const handleChangeFolder = (event) => {
@@ -220,50 +185,60 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                 </div>
                 <Row tag='form' className='gy-1 pt-75' onSubmit={handleSubmit(onSubmit)}>
                     <Col xs={12}>
-                        <Label className='form-label' for='file'>
-                            Danh sách tài liệu <span style={{ color: 'red' }}>(*)</span>
-                        </Label>
-                        <Controller
+                        <div className='d-flex justify-content-between'>
+                            <Label className='form-label' for='file'>
+                                Danh sách tài liệu <span style={{ color: 'red' }}>(*)</span>
+                            </Label>
+                            {
+                                listImport?.length > 0 && <small style={{ color: "#09a863", cursor: "pointer" }} onClick={() => setModalImportFile(true)}>Chi tiết tài liệu</small>
+                            }
+                        </div>
+                        {/* <Controller
                             name='file'
                             control={control}
-                            render={({ field }) => (
-                                <Input {...field} id='file'
-                                    type='file'
-                                    placeholder='Chọn tài liệu'
-                                    ref={fileInputRef}
-                                    invalid={errors.file && true} onChange={(event) => {
-                                        handleChangeFile(event)
-                                        field.onChange(event)
-                                    }} />
-                            )}
-                        />
+                            render={({ field }) => ( */}
+                        <Input id='file'
+                            type='file'
+                            placeholder='Chọn tài liệu'
+                            ref={fileInputRef}
+                            invalid={errors.file && true} onChange={(event) => {
+                                handleChangeFile(event)
+                                // field.onChange(event)
+                            }} />
+                        {/* )}
+                        /> */}
                         {errors.file && <FormFeedback>{errors.file.message}</FormFeedback>}
                     </Col>
                     <Col xs={12}>
-                        <Label className='form-label' for='folder'>
-                            Thư mục tài liệu <span style={{ color: 'red' }}>(*)</span>
-                        </Label>
-                        <Controller
+                        <div className='d-flex justify-content-between'>
+                            <Label className='form-label' for='folder'>
+                                Thư mục tài liệu <span style={{ color: 'red' }}>(*)</span>
+                            </Label>
+                            {
+                                files?.length > 0 && <small style={{ color: "#09a863", cursor: "pointer" }} onClick={() => setModalPreview(true)}>Chi tiết các tệp tải lên</small>
+                            }
+                        </div>
+                        {/* <Controller
                             name='folder'
                             control={control}
-                            render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    id='folder'
-                                    type='file'
-                                    webkitdirectory="true"
-                                    directory=""
-                                    multiple
-                                    ref={folderInputRef} // Sử dụng ref để truy cập input
-                                    placeholder='Chọn thư mục'
-                                    invalid={errors.folder && true}
-                                    onChange={(event) => {
-                                        handleChangeFolder(event)
-                                        field.onChange(event) // Gọi field.onChange để cập nhật form state
-                                    }}
-                                />
-                            )}
+                            render={({ field }) => ( */}
+                        <Input
+                            // {...field}
+                            id='folder'
+                            type='file'
+                            webkitdirectory="true"
+                            directory=""
+                            multiple
+                            ref={folderInputRef} // Sử dụng ref để truy cập input
+                            placeholder='Chọn thư mục'
+                            invalid={errors.folder && true}
+                            onChange={(event) => {
+                                handleChangeFolder(event)
+                                // field.onChange(event) // Gọi field.onChange để cập nhật form state
+                            }}
                         />
+                        {/* )}
+                        /> */}
                         {errors.folder && <FormFeedback>{errors.folder.message}</FormFeedback>}
                     </Col>
                     {/* <span style={{ color: 'red' }}>
