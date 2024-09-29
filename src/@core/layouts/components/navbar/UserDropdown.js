@@ -57,16 +57,16 @@ const UserDropdown = () => {
           <User size={14} className='me-75' />
           <span className='align-middle'>Thông tin</span>
         </DropdownItem> */}
-        <DropdownItem tag={Link} to='/apps/users/changePass'>
+        {/* <DropdownItem tag={Link} to='/apps/users/changePass'>
           <Key size={14} className='me-75' />
           <span className='align-middle'>Đổi mật khẩu</span>
-        </DropdownItem>
-        <DropdownItem onClick={() => handleClickHelp()}>
+        </DropdownItem> */}
+        {/* <DropdownItem onClick={() => handleClickHelp()}>
           <a style={{ listStyle: "none", color: "black" }} href='../../../../lylichchuyengiakhoahoc/HDSD_HeThongHVCT.docx' download>
             <HelpCircle size={14} className='me-75' />
             <span className='align-middle'>Hướng dẫn </span>
           </a>
-        </DropdownItem>
+        </DropdownItem> */}
         {/* <DropdownItem tag={Link} to='/apps/todo'>
           <CheckSquare size={14} className='me-75' />
           <span className='align-middle'>Tasks</span>

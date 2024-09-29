@@ -100,13 +100,13 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
             return
         }
 
-        // Tạo biến tạm thời để lưu file trước khi set vào state
-        const selectedFile = file
-
-        setFileExcel(selectedFile) // Lưu file vào state
+        // Nếu file không thay đổi, không gọi setFileExcel
+        if (fileExcel !== file) {
+            setFileExcel(file) // Lưu file vào state
+        }
 
         // Đọc file và xử lý sau đó
-        readXlsxFile(selectedFile).then((rows) => {
+        readXlsxFile(file).then((rows) => {
             const temp = rows.slice(4) // Cắt mảng từ hàng bắt đầu
             setListImport(temp) // Lưu danh sách sau khi xử lý
             setModalImportFile(true) // Mở modal hiển thị kết quả import
@@ -204,9 +204,11 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                         <Controller
                             name='file'
                             control={control}
+                            defaultValue={undefined}
                             render={({ field }) => (
                                 <Input {...field} id='file'
                                     type='file'
+                                    value={undefined}
                                     placeholder='Chọn tài liệu'
                                     ref={fileInputRef}
                                     invalid={errors.file && true} onChange={(event) => {
@@ -229,8 +231,10 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                         <Controller
                             name='folder'
                             control={control}
+                            value={undefined}
                             render={({ field }) => (
                                 <Input
+                                    value={undefined}
                                     {...field}
                                     id='folder'
                                     type='file'
