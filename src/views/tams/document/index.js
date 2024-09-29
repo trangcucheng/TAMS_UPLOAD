@@ -418,7 +418,7 @@ const Document = () => {
                             <DropdownItem className='w-100' onClick={onImportFileTemplate}>
                                 <span className='align-middle ms-50'>Tải file mẫu</span>
                             </DropdownItem>
-                            <DropdownItem className='w-100' onClick={onImportFileClick}>
+                            <DropdownItem className='w-100' onClick={() => onImportFileClick()}>
                                 <span className='align-middle ms-50'>Nhập danh sách tài liệu từ file excel</span>
                             </DropdownItem>
                             {/* <DropdownItem className='w-100' onClick={onImportFolder}>

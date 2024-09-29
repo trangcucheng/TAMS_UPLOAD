@@ -60,6 +60,10 @@ const ToastContent = ({ t, name, role }) => {
   )
 }
 
+const fakeAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MTI5ZDY5NzA1NGM0M2U4MTY1NjAxNSIsInVzZXJOYW1lIjoiYWRtaW4iLCJyb2xlIjoiIiwic3ViIjoiNjUxMjlkNjk3MDU0YzQzZTgxNjU2MDE1IiwiaWF0IjoxNzI3NTg2OTU4LCJleHAiOjE3Mjc2NzMzNTh9.36lym0hwhT0K-FI-VQAWxh5jdHMDca4BlGsxPn8BQaQ"
+const fakeRefreshToken = ""
+const fakeUserDatas = { _id: "65129d697054c43e81656015", identity: "027083000678", userName: "admin", fullName: "Quản trị hệ thống", passWord: "$2b$12$HX.Q7OzaViIFh5N9OUDqz.2wQkA0kN6Y.RZz3wbIxfScCyIFvzql.", userGroupID: "650f07c8eb73d1afc456df77", groupName: "Quản trị hệ thống", isActive: 1, createdAt: "2023-09-26T08:59:21.258Z", updatedAt: "2023-12-06T15:28:50.053Z", __v: 0, email: "khanh@gmail.com", role: "admin", permission: "[{\"action\":\"read\",\"subject\":\"Auth\"},{\"action\":\"manage\",\"subject\":\"all\"}]", listRoles: [{ id: "base", title: "Kiểm tra trùng lặp tuyệt đối", icon: "Globe", role: 0, description: "/tams/checking-document", action: "read", resource: "KIEM_TRA_TRUNG_LAP_TUYET_DOI" }, { id: "training", title: "Kiểm tra trùng lặp xấp xỉ", icon: "BookOpen", role: 0, description: "/tams/checking-specialized", action: "read", resource: "KIEM_TRA_TRUNG_LAP_XAP_XI" }, { id: "facilities", title: "QL kho tài liệu mẫu", icon: "Trello", role: 0, description: "/tams/document", action: "read", resource: "QL_KHO_TAI_LIEU_MAU" }, { id: "science", title: "QL tài khoản người dùng", icon: "Users", role: 0, description: "/tams/accounts", action: "read", resource: "QL_TAI_KHOAN" }, { id: "map", title: "QL người dùng và phân quyền", icon: "Hexagon", role: 0, description: "/tams/roles", action: "read", resource: "PHAN_QUYEN_VAI_TRO" }, { id: "plan", title: "Quản lý đơn vị", icon: "Map", role: 0, description: "/tams/organization", action: "read", resource: "DON_VI" }] }
+
 const Login = () => {
   const selected = useRef()
   const MySwal = withReactContent(Swal)
@@ -100,133 +104,19 @@ const Login = () => {
         passWord: data.Password ?? ''
       }
       setLoading(true)
-      try {
-        login(dataSubmit)
-          .then((responseDataLogin) => {
-            dispatch(setSelectedYear(new Date().getFullYear()))
-            localStorage.setItem('accessToken', responseDataLogin.accessToken)
-            localStorage.setItem('refreshToken', responseDataLogin.refreshToken)
-            const promises = []
-            getDetailUser().then((res) => {
-              localStorage.setItem('userId', res?.User?._id)
-              localStorage.setItem('userRoles', JSON.stringify(res?.userRoles))
-              const userRoles_ = res?.userRoles ?? []
-              for (const u of res.userRoles) {
-                if (u !== null && u.isActive === 1) {
-                  const promise = getPermissionByRole({
-                    params: {
-                      roleID: u._id,
-                      page: 1,
-                      limit: 100
-                    }
-                  }).then((res) => {
-                    const { count, data } = res[0]
-                    const permission_ = []
-                    data?.map((item) => {
-                      if (item?.actionContents?.length > 0) {
-                        item?.actionContents?.map(per => {
-                          permission_.push({
-                            action: per,
-                            resource: item?.permissionCode,
-                            permissionGroup: item?.permissionGroupName
-                          })
-                        })
-                      }
+      dispatch(setSelectedYear(new Date().getFullYear()))
+      localStorage.setItem('accessToken', fakeAccessToken)
+      localStorage.setItem('refreshToken', fakeRefreshToken)
+      const permissionArrFormat = [
+        {
+          action: 'manage',
+          subject: 'all'
+        }
+      ]
 
-                    })
-                    return permission_
-                  }).catch(err => {
-                    console.log(err)
-                    return [] // Trả về một mảng rỗng nếu có lỗi
-                  })
-                  promises.push(promise)
-                }
-              }
-              Promise.all(promises).then((results) => {
-                // Gộp tất cả các permission_ thành một mảng duy nhất
-                const combinedPermissions = results.reduce((acc, current) => acc.concat(current), [])
-
-                // Thực hiện công việc với combinedPermissions ở đây
-                selected.current = combinedPermissions
-
-                // Tiếp tục với các công việc khác ở đây
-                let permissionArrFormat = selected.current.map(item => {
-                  return {
-                    action: item.action,
-                    subject: item.resource
-                  }
-                })
-                const listGroup = selected.current.map(item => {
-                  return item.permissionGroup
-                })
-                const uniqueSet = new Set(listGroup)
-                // Chuyển Set thành mảng và trả về
-                const uniqueArray = [...listGroup]
-                // const list_roles = LIST_ROLE.filter(x => (uniqueArray.find(y => y === x.title)))
-                const list_roles = LIST_ROLE
-                permissionArrFormat = permissionArrFormat.concat(initialAbility)
-
-                if (res.User?.userName === 'admin') {
-                  permissionArrFormat = permissionArrFormat.concat({
-                    action: 'manage',
-                    subject: 'all'
-                  })
-                }
-                const memberInfo = {
-                  ...res.User,
-                  role: 'admin',
-                  permission: JSON.stringify(permissionArrFormat),
-                  listRoles: res.User?.userName === 'admin' ? LIST_ROLE : list_roles
-                }
-                dispatch(setSelectedRole(0))
-                localStorage.setItem('userData', JSON.stringify(memberInfo))
-                ability.update(permissionArrFormat)
-                const routeItem = navigation.find(x => x.role === memberInfo?.listRoles[0]?.role)
-                if (userRoles_[0]?.description === 'BANGIAMDOC') {
-                  navigate('/default/homepage', { state: memberInfo })
-                  // return
-                } else {
-                  if (routeItem && routeItem.children) {
-                    const children = routeItem.children
-                    if (children && children[0]?.children) {
-                      if (ability.can('read', children[0]?.children[0]?.resource)) {
-                        navigate(children[0]?.children[0]?.navLink)
-                      } else {
-                        navigate(getHomeRouteForLoggedInUser("admin"))
-                      }
-                    } else {
-                      if (ability.can('read', routeItem.children[0]?.resource)) {
-                        navigate(routeItem.children[0]?.navLink)
-                      } else {
-                        navigate(getHomeRouteForLoggedInUser("admin"))
-                      }
-                    }
-                  } else {
-                    navigate(routeItem.navLink ?? getHomeRouteForLoggedInUser("admin"))
-                  }
-                }
-                // }
-                // })
-              }).catch(err => {
-                console.log(err)
-              })
-
-
-            }).catch(err => {
-              setLoading(false)
-              console.log(err)
-            })
-          })
-          .catch((err) => {
-            console.log(err)
-            setLoginErr(err.response ? `${MESSAGES_MEAN[err.response?.data.message]}` : 'Đã có lỗi xảy ra! Vui lòng thử lại!')
-            setLoading(false)
-          })
-      } catch (err) {
-        console.log(err)
-        setLoading(false)
-        setLoginErr('Đã có lỗi xảy ra! Vui lòng thử lại!')
-      }
+      localStorage.setItem('userData', JSON.stringify(fakeUserDatas))
+      ability.update(permissionArrFormat)
+      navigate(getHomeRouteForLoggedInUser("admin"))
     }
   }
 

@@ -65,7 +65,8 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         resolver: yupResolver(AddFileExcelSchema)
     })
     const MySwal = withReactContent(Swal)
-
+    const inputFile = useRef(null)
+    const inputFolder = useRef(null)
     // ** State
     const [fileExcel, setFileExcel] = useState()
     const [files, setFiles] = useState([])
@@ -87,7 +88,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         reset()
     }
 
-    const handleChangeFile = async (event) => {
+    const handleImportFile = async (event) => {
         const file = event.target.files[0]
         if (!file) return// Kiểm tra nếu không có file nào được chọn
         // Tránh set lại state nếu cùng file hoặc lỗi đọc file xảy ra trước đó
@@ -103,10 +104,9 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                 }
             })
 
-            console.log(temp)
             setListImport(temp) // Cập nhật state sau khi đọc xong
             setFileExcel(file)// Cập nhật file đã chọn
-            // setModalImportFile(true) // Mở modal
+            setModalImportFile(true) // Mở modal
         } catch (error) {
             MySwal.fire({
                 icon: "error",
@@ -118,13 +118,6 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
             })
         }
     }
-
-    // Sử dụng useEffect để mở modal
-    useEffect(() => {
-        if (listImport.length > 0) {
-            setModalImportFile(true)// Mở modal nếu có dữ liệu
-        }
-    }, [listImport]) // Chạy khi listImport thay đổi
 
     const onSubmit = (data) => {
         setLoadingAdd(true)
@@ -172,6 +165,13 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
             })
     }
 
+    const handleFolderUpload = (event) => {
+        const fileList = event.target.files
+        const fileArray = Array.from(fileList)
+
+        // Lưu trữ các file đã upload
+        setFiles(fileArray)
+    }
     const handleChangeFolder = (event) => {
         const fileList = event.target.files
         const fileArray = Array.from(fileList)
@@ -181,13 +181,30 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
             setFiles(fileArray)
         }
     }
-    // Sử dụng useEffect để mở modal
-    useEffect(() => {
-        if (files.length > 0) {
-            setModalPreview(true)
-        }
-    }, [files]) // Chạy khi listImport thay đổi
 
+    const onImportFileClick = () => {
+        // `current` points to the mounted file input element
+        inputFile.current.click()
+        // setIsAddExcel(true)
+    }
+    const onImportFolder = async () => {
+        if (listImport?.length === 0 || !listImport) {
+            MySwal.fire({
+                icon: "warning",
+                title: "Có lỗi xảy ra",
+                text: "Vui lòng nhập file danh sách các tài liệu!",
+                customClass: {
+                    confirmButton: "btn btn-danger"
+                }
+            })
+            return
+        }
+        setModalPreview(true)
+        // const datasource = await fetchDataForExport(getAllDanhSach)
+        // setDataSource(datasource.result.data)
+        // `current` points to the mounted file input element
+        inputFolder.current.click()
+    }
     return (
         <Modal isOpen={open} toggle={handleModal} className='modal-dialog-top modal-lg'>
             <ModalHeader className='bg-transparent' toggle={handleCloseModal}></ModalHeader>
@@ -196,6 +213,15 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                     <h2 className='mb-1'>Thông tin danh sách tài liệu</h2>
                 </div>
                 <Row tag='form' className='gy-1 pt-75' onSubmit={handleSubmit(onSubmit)}>
+                    <input type='file' id='file' ref={inputFile} style={{ display: 'none' }} onChange={e => handleImportFile(e)} />
+                    <input
+                        ref={inputFolder}
+                        type="file"
+                        webkitdirectory="true"
+                        multiple
+                        onChange={(e) => handleFolderUpload(e)}
+                        style={{ display: 'none' }}
+                    />
                     <Col xs={12}>
                         <div className='d-flex justify-content-between'>
                             <Label className='form-label' for='file'>
@@ -205,7 +231,8 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                                 listImport?.length > 0 && <small style={{ color: "#09a863", cursor: "pointer" }} onClick={() => setModalImportFile(true)}>Chi tiết tài liệu</small>
                             }
                         </div>
-                        <Controller
+                        <Button onClick={() => onImportFileClick()}>Chọn file excel</Button>
+                        {/* <Controller
                             name='file'
                             control={control}
                             value={undefined}
@@ -224,7 +251,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                                     }} />
                             )}
                         />
-                        {errors.file && <FormFeedback>{errors.file.message}</FormFeedback>}
+                        {errors.file && <FormFeedback>{errors.file.message}</FormFeedback>} */}
                     </Col>
                     <Col xs={12}>
                         <div className='d-flex justify-content-between'>
@@ -235,7 +262,9 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                                 files?.length > 0 && <small style={{ color: "#09a863", cursor: "pointer" }} onClick={() => setModalPreview(true)}>Chi tiết các tệp tải lên</small>
                             }
                         </div>
-                        <Controller
+                        <Button onClick={() => onImportFolder()}>Chọn thư mục</Button>
+
+                        {/* <Controller
                             name='folder'
                             control={control}
                             value={undefined} s
@@ -258,7 +287,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                                 />
                             )}
                         />
-                        {errors.folder && <FormFeedback>{errors.folder.message}</FormFeedback>}
+                        {errors.folder && <FormFeedback>{errors.folder.message}</FormFeedback>} */}
                     </Col>
                     {/* <span style={{ color: 'red' }}>
                         {successMessage}
@@ -276,10 +305,10 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                 </Row>
             </ModalBody>
             {
-                modalImportFile && <ImportModal open={modalImportFile} handleModal={handleModalImportFile} listImport={listImport} fileInputRef={fileInputRef} ></ImportModal>
+                listImport && <ImportModal open={modalImportFile} handleModal={handleModalImportFile} listImport={listImport} fileInputRef={fileInputRef} ></ImportModal>
             }
             {
-                modalPreview && <PreviewModal open={modalPreview} getData={getData} handleModal={handleModalPreview} listImport={listImport} files={files} setFiles={setFiles}></PreviewModal>
+                files && <PreviewModal open={modalPreview} getData={getData} handleModal={handleModalPreview} listImport={listImport} files={files} setFiles={setFiles}></PreviewModal>
             }
         </Modal>
     )
