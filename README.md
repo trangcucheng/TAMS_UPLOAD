@@ -1,4 +1,4 @@
-# Phần mềm phát hiện đạo văn - TCCT
+# Phần mềm phát hiện đạo văn - SQCT
 
 ### Công nghệ sử dụng
 

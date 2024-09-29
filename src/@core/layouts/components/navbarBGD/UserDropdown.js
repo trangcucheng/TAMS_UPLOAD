@@ -62,7 +62,7 @@ const UserDropdown = () => {
           <span className='align-middle'>Đổi mật khẩu</span>
         </DropdownItem>
         <DropdownItem onClick={() => handleClickHelp()}>
-          <a style={{ listStyle: "none", color: "black" }} href='../../../../lylichchuyengiakhoahoc/HDSD_HeThongTCCT.docx' download>
+          <a style={{ listStyle: "none", color: "black" }} href='../../../../lylichchuyengiakhoahoc/HDSD_HeThongSQCT.docx' download>
             <HelpCircle size={14} className='me-75' />
             <span className='align-middle'>Hướng dẫn </span>
           </a>

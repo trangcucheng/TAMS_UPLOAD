@@ -117,14 +117,14 @@ export const LIST_ROLE = [
     //     title: 'Quản lý TT học trực tuyến',
     //     icon: "Info",
     //     role: 6,
-    //     description: 'qltthtt.TCCT.info'
+    //     description: 'qltthtt.SQCT.info'
     // },
     // {
     //     id: 'manage',
     //     title: 'Quản lý TT điều hành',
     //     icon: "Globe",
     //     role: 7,
-    //     description: 'qlttdh.TCCT.info'
+    //     description: 'qlttdh.SQCT.info'
     // }
 ]
 

@@ -129,7 +129,7 @@ const Login = () => {
 
             </Link>
             <CardTitle tag='h1' className='fw-bold mb-1' style={{ textAlign: 'center', marginBottom: '4rem', marginTop: '1rem' }}>
-              Tổng cục Chính trị
+              Trường Sĩ quan Chính trị
             </CardTitle>
             <CardTitle tag='h2' className='fw-bold mb-1' style={{ textAlign: 'center', marginTop: '2rem' }}>
               Hệ thống cập nhật dữ liệu phục vụ phát hiện đạo văn
