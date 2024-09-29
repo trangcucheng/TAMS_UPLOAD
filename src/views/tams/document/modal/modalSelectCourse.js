@@ -34,6 +34,7 @@ import classNames from "classnames"
 import { postCheckingDocumentVersion } from "../../../../api/checking_document_version"
 import withReactContent from "sweetalert2-react-content"
 import { postFromExcel } from "../../../../api/checking_document_version_by_word"
+import ExcelJS from 'exceljs' // Import thư viện exceljs
 
 const SelectCourseModal = ({ open, handleModal, getData }) => {
     const fileInputRef = useRef(null) // Tạo ref cho input file
@@ -158,8 +159,8 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                     }
                 })
             }
-            setFileExcel()
-            setFiles()
+            setFileExcel(null)
+            setFiles([])
             handleCloseModal()
         }).catch(error => {
             console.log(error)
