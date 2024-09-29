@@ -20,8 +20,6 @@ import { toDateString } from '../../../../utility/Utils'
 import { setListDataImport } from '../../../apps/ecommerce/store'
 import dayjs from "dayjs"
 const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) => {
-    console.log(listImport, "listImport")
-
     if (!listImport && (listImport.length = 0)) {
         if (fileInputRef.current) {
             fileInputRef.current.value = null
@@ -284,13 +282,8 @@ const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) =
                 infoOneRow.source = row[6]
             }
             // Kiểm tra lĩnh vực
-            if (row[7] === null) {
-                temp.push({
-                    loi: 'Lĩnh vực tài liệu không được để trống',
-                    Vitri: `${listColumn[7]}${index + 2}`
-                })
-            } else {
-                infoOneRow.source = row[7]
+            if (row[7] !== null) {
+                infoOneRow.supervisor = row[7]
             }
             if (row[8] !== null) {
                 infoOneRow.publish_date = row[8]

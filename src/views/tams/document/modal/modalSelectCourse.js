@@ -48,7 +48,6 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         // ),
         file: yup.mixed().required("Yêu cầu chọn file"),
         folder: yup.mixed().required("Vui lòng chọn thư mục"),
-        course: yup.object().required("Yêu cầu chọn đợt kiểm tra").nullable()
     })
 
     // ** Hooks
@@ -133,15 +132,15 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     const handleChangeFile = (event) => {
         const file = event.target.files[0]
         setFileExcel(file)
+        const startIndex = 4
         // setValue('file', file) // Cập nhật giá trị vào form
         readXlsxFile(file).then((rows) => {
             const temp = []
             rows.forEach((item, index) => {
-                if (index > 0) {
+                if (index > startIndex) {
                     temp.push(item)
                 }
             })
-            console.log(temp, "temp")
             setListImport(temp)
             setModalImportFile(true)
         }).catch(error => {
@@ -161,7 +160,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         // const files_ = files
         const formData = new FormData()
         formData.append('excel', fileExcel)
-        formData.append('courseId', data.course.value)
+        formData.append('courseId', 1)
         files?.map((file) => {
             formData.append('files', file)
         })
@@ -220,28 +219,6 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                     <h2 className='mb-1'>Thông tin danh sách tài liệu</h2>
                 </div>
                 <Row tag='form' className='gy-1 pt-75' onSubmit={handleSubmit(onSubmit)}>
-                    <Col xs={12}>
-                        <Label className='form-label' for='course'>
-                            Đợt kiểm tra <span style={{ color: 'red' }}>(*)</span>
-                        </Label>
-                        <Controller
-                            id='react-select'
-                            name='course'
-                            control={control}
-                            render={({ field }) => (
-                                <Select
-                                    placeholder="Chọn đợt kiểm tra"
-                                    classNamePrefix='select'
-                                    name='clear'
-                                    options={listCourse}
-                                    isClearable
-                                    // filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-                                    className={classNames('react-select', { 'is-invalid': errors.course && true })}
-                                    {...field}
-                                />)}
-                        />
-                        {errors.course && <FormFeedback>{errors.course.message}</FormFeedback>}
-                    </Col>
                     <Col xs={12}>
                         <Label className='form-label' for='file'>
                             Danh sách tài liệu <span style={{ color: 'red' }}>(*)</span>

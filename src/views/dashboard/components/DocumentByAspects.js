@@ -57,6 +57,13 @@ const DocumentByAspects = ({ colors }) => {
         plugins: {
             legend: {
                 position: 'bottom', // Vị trí của chú thích
+                labels: {
+                    boxWidth: 12, // Giảm kích thước hộp của chú thích
+                    font: {
+                        size: 10, // Giảm kích thước font của chú thích
+                    },
+                },
+                maxWidth: 200, // Điều chỉnh chiều rộng tối đa của legend
             },
             tooltip: {
                 enabled: true, // Hiển thị tooltip khi hover
@@ -78,6 +85,12 @@ const DocumentByAspects = ({ colors }) => {
                 },
             },
         },
+        layout: {
+            padding: {
+                right: 0, // Tăng padding bên phải để biểu đồ có nhiều không gian hơn
+            }
+        },
+
     }
 
     return (
@@ -89,7 +102,7 @@ const DocumentByAspects = ({ colors }) => {
                     </CardTitle>
                 </div>
             </CardHeader>
-            <CardBody style={{ width: '400px', height: '400px', margin: 'auto' }}>
+            <CardBody style={{ width: '470px', height: '470px', margin: 'auto' }}>
                 <Pie data={data1} options={options} />
             </CardBody>
         </Card>

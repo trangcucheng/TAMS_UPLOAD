@@ -127,7 +127,7 @@ const getRandomColor = () => {
     const b = Math.floor(Math.random() * 255)
     return `rgba(${r},${g},${b},0.8)`
 }
-export default function DocumentByTime({colorForLabel, colors}) {
+export default function DocumentByTime({ colorForLabel, colors }) {
     const currentYear = new Date().getFullYear()
     const [filter, setFilter] = useState({
         startDate: dayjs(`${currentYear}-01-01`),
@@ -196,18 +196,38 @@ export default function DocumentByTime({colorForLabel, colors}) {
             }
         }).then((res) => {
             const apiData = res?.data ?? []
+            // const apiData = apiData_.sort((a, b) => a.id - b.id)
+
             // Lấy tất cả các loại tài liệu (không trùng lặp)
-            const allMajors = new Set()
+            const allMajors = []
+            const seenMajors = {}
+
+            // Lưu trữ các tên vào mảng và theo dõi sự duy nhất
             apiData?.forEach(item => {
                 item?.major?.forEach(majorItem => {
-                    allMajors.add(majorItem.name)
+                    // Chỉ thêm nếu tên chưa được thấy
+                    if (!seenMajors[majorItem.name]) {
+                        seenMajors[majorItem.name] = true
+                        allMajors.push({
+                            name: majorItem.name,
+                            id: majorItem.id
+                        })
+                    }
                 })
             })
-            // Chuyển `Set` thành mảng để dễ làm việc
-            const majorLabels = Array.from(allMajors)
+
+            // Sắp xếp mảng sao cho phần tử có id = 1 luôn nằm ở cuối
+            const sortedMajors = allMajors.sort((a, b) => {
+                if (a.id === 1) return 1 // Đẩy phần tử có id = 1 xuống cuối
+                if (b.id === 1) return -1  // Đẩy phần tử có id = 1 xuống cuối
+                return 0                // Giữ nguyên thứ tự của các phần tử còn lại
+            }).map(item => item.name)
+
+            console.log(sortedMajors)
+
 
             // Tạo mảng `datasets` động
-            const datasets_ = majorLabels?.map((majorName, index) => {
+            const datasets_ = sortedMajors?.map((majorName, index) => {
                 return {
                     label: majorName,
                     data: apiData?.map(item => {

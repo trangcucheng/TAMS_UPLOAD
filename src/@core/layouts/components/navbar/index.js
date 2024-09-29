@@ -57,7 +57,7 @@ const ThemeNavbar = props => {
         {/* <NavbarBookmarks setMenuVisibility={setMenuVisibility} /> */}
         {/* <NavbarMenu/>
         <SwiperNavigation/> */}
-        <h5 style={{ textTransform: "uppercase", margin: '0', color: "#09A863", fontWeight: 'bold' }}>{`Phân hệ ${subsystem}`}</h5>
+        <h5 style={{ textTransform: "uppercase", margin: '0', color: "#09A863", fontWeight: 'bold' }}>{`Hệ thống nhập tài liệu mẫu`}</h5>
       </div>
       {/* <NavbarMenu/> */}
       <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }} className="col col-6">
