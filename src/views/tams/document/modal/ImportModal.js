@@ -9,14 +9,9 @@ import { useDispatch } from 'react-redux'
 // ** Reactstrap Imports
 import { Modal, Input, Label, Button, ModalHeader, ModalBody, InputGroup, InputGroupText, Alert } from 'reactstrap'
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons"
-// import responseResultHelper from '../../../utils/reponsive'
-// import { ACTION_METHOD_TYPE } from '../../../utils/constant'
 // ** Styles
 import '@styles/react/libs/flatpickr/flatpickr.scss'
-// import { TaoNhieuHoSoDangKi } from '../../../../api/hoSoDangKi'
 import { toDateString } from '../../../../utility/Utils'
-// import { kiemTraTruong, taoNhieuTruongDaiHoc, taoTruongDaiHoc } from '../../../../api/truongDaiHoc'
-// import { kiemTraNganh, taoNganhDaiHoc, taoNhieuNganhDaiHoc } from '../../../../api/nganhDaiHoc'
 import { setListDataImport } from '../../../apps/ecommerce/store'
 import dayjs from "dayjs"
 const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) => {
@@ -27,8 +22,6 @@ const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) =
     }
     // ** State
     // ** Custom close btn
-    // const [listTDH, setListTDH] = useState(listTDHda)
-    // const [listNganh, setListNganh] = useState(listNganhda)
     const dispatch = useDispatch()
     const [isEdit, setIsEdit] = useState(false)
     const [info, setInfo] = useState()
@@ -309,11 +302,11 @@ const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) =
             setDisable(false)
             setDataImport(dataTemp)
         }
-        return temp
+        setListErr(temp)
     }
     useEffect(() => {
         const errs = checkErr(listImport)
-        setListErr(errs)
+        // setListErr(errs)
     }, [listImport])
 
     return (

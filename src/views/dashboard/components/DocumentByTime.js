@@ -216,17 +216,12 @@ export default function DocumentByTime({ colorForLabel, colors }) {
                 })
             })
 
-            // Sắp xếp mảng sao cho phần tử có id = 1 luôn nằm ở cuối
             const sortedMajors = allMajors.sort((a, b) => {
-                if (a.id === 1) return 1 // Đẩy phần tử có id = 1 xuống cuối
-                if (b.id === 1) return -1  // Đẩy phần tử có id = 1 xuống cuối
-                return 0                // Giữ nguyên thứ tự của các phần tử còn lại
+                if (a.id === 1) return 1
+                if (b.id === 1) return -1
+                return 0
             }).map(item => item.name)
 
-            console.log(sortedMajors)
-
-
-            // Tạo mảng `datasets` động
             const datasets_ = sortedMajors?.map((majorName, index) => {
                 return {
                     label: majorName,
