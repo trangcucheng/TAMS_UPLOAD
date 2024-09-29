@@ -20,6 +20,7 @@ import { toDateString } from '../../../../utility/Utils'
 import { setListDataImport } from '../../../apps/ecommerce/store'
 import dayjs from "dayjs"
 const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) => {
+    console.log(listImport)
     // if (!listImport && (listImport.length = 0)) {
     //     if (fileInputRef.current) {
     //         fileInputRef.current.value = null

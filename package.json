@@ -85,7 +85,7 @@
     "react-slidedown": "^2.4.7",
     "react-sortablejs": "6.0.0",
     "reactstrap": "^9.1.5",
-    "read-excel-file": "^5.8.5",
+    "read-excel-file": "^5.6.1",
     "recharts": "^2.1.9",
     "redux": "^4.2.0",
     "redux-debounced": "0.5.0",

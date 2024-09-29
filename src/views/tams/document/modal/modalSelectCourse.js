@@ -15,7 +15,7 @@ import {
     Form,
     Spinner
 } from "reactstrap"
-import readXlsxFile from 'read-excel-file/web-worker'
+import readXlsxFile from 'read-excel-file'
 
 // ** Third Party Components
 import Select from 'react-select'
@@ -74,7 +74,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     const [successMessage, setSuccessMessage] = useState('')
     const [firstApiResult, setFirstApiResult] = useState(null)
     const [modalImportFile, setModalImportFile] = useState(false)
-    const [listImport, setListImport] = useState()
+    const [listImport, setListImport] = useState([])
     const handleModalImportFile = () => setModalImportFile(!modalImportFile)
     const [loading, setLoading] = useState(false)
     const [canSubmit, setCanSubmit] = useState(false)
@@ -87,15 +87,27 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         reset()
     }
 
-    const handleChangeFile = (event) => {
+    const handleChangeFile = async (event) => {
         const file = event.target.files[0]
-        setFileExcel(file)
-        const startIndex = 4
-        readXlsxFile(file).then((rows) => {
-            const temp = rows?.slice(4)
-            setListImport(temp)
-            setModalImportFile(true)
-        }).catch(error => {
+        if (!file) return// Kiểm tra nếu không có file nào được chọn
+        // Tránh set lại state nếu cùng file hoặc lỗi đọc file xảy ra trước đó
+        if (fileExcel && fileExcel.name === file.name) return
+
+        try {
+            const rows = await readXlsxFile(file) // Đọc file Excel
+
+            const temp = []
+            rows.forEach((item, index) => {
+                if (index >= 4) { // Bỏ qua dòng tiêu đề
+                    temp.push(item)
+                }
+            })
+
+            console.log(temp)
+            setListImport(temp) // Cập nhật state sau khi đọc xong
+            setFileExcel(file)// Cập nhật file đã chọn
+            // setModalImportFile(true) // Mở modal
+        } catch (error) {
             MySwal.fire({
                 icon: "error",
                 title: "Có lỗi xảy ra",
@@ -104,8 +116,15 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                     confirmButton: "btn btn-danger"
                 }
             })
-        })
+        }
     }
+
+    // Sử dụng useEffect để mở modal
+    useEffect(() => {
+        if (listImport.length > 0) {
+            setModalImportFile(true)// Mở modal nếu có dữ liệu
+        }
+    }, [listImport]) // Chạy khi listImport thay đổi
 
     const onSubmit = (data) => {
         setLoadingAdd(true)
@@ -157,14 +176,17 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         const fileList = event.target.files
         const fileArray = Array.from(fileList)
 
-        setFiles(fileArray)
-
-        setModalPreview(true)
-
-        // if (folderInputRef.current) {
-        //     folderInputRef.current.value = undefined // Reset giá trị input
-        // }
+        // Kiểm tra xem fileArray có khác với files hiện tại không
+        if (JSON.stringify(fileArray) !== JSON.stringify(files)) {
+            setFiles(fileArray)
+        }
     }
+    // Sử dụng useEffect để mở modal
+    useEffect(() => {
+        if (files.length > 0) {
+            setModalPreview(true)
+        }
+    }, [files]) // Chạy khi listImport thay đổi
 
     return (
         <Modal isOpen={open} toggle={handleModal} className='modal-dialog-top modal-lg'>
@@ -198,7 +220,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                                     invalid={errors.file && true}
                                     onChange={(event) => {
                                         handleChangeFile(event)
-                                        // field.onChange(event)
+                                        field.onChange(event)
                                     }} />
                             )}
                         />
@@ -216,7 +238,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                         <Controller
                             name='folder'
                             control={control}
-                            value={undefined}s
+                            value={undefined} s
                             render={({ field }) => (
                                 <Input
                                     {...field}
@@ -231,7 +253,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                                     invalid={errors.folder && true}
                                     onChange={(event) => {
                                         handleChangeFolder(event)
-                                        // field.onChange(event) // Gọi field.onChange để cập nhật form state
+                                        field.onChange(event) // Gọi field.onChange để cập nhật form state
                                     }}
                                 />
                             )}
@@ -254,10 +276,10 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                 </Row>
             </ModalBody>
             {
-                listImport && <ImportModal open={modalImportFile} handleModal={handleModalImportFile} listImport={listImport} fileInputRef={fileInputRef} ></ImportModal>
+                modalImportFile && <ImportModal open={modalImportFile} handleModal={handleModalImportFile} listImport={listImport} fileInputRef={fileInputRef} ></ImportModal>
             }
             {
-                listImport && files && <PreviewModal open={modalPreview} getData={getData} handleModal={handleModalPreview} listImport={listImport} files={files} setFiles={setFiles}></PreviewModal>
+                modalPreview && <PreviewModal open={modalPreview} getData={getData} handleModal={handleModalPreview} listImport={listImport} files={files} setFiles={setFiles}></PreviewModal>
             }
         </Modal>
     )

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 // ** Reactstrap Imports
@@ -10,15 +10,14 @@ import { Card, Modal, Row, Col, CardHeader, CardTitle, CardBody, Button, ListGro
 import { useDropzone } from 'react-dropzone'
 import { FileText, X, DownloadCloud } from 'react-feather'
 import { setListDataImport } from '../../../apps/ecommerce/store'
-// import { uploadZip } from '../../../../api/hoSoDangKi'
-// import responseResultHelper from '../../../utils/reponsive'
-// import { ACTION_METHOD_TYPE } from '../../../utils/constant'
 
 const PreviewModal = ({ open, handleModal, data, listImport, files, setFiles, getData }) => {
   // ** State
+  const [listThieuFile, setListThieuFile] = useState("")
+  const [listThuaFile, setListThuaFile] = useState("")
+
   const handleClose = () => {
     handleModal()
-    // setFiles([])
   }
   const CloseBtn = <X className='cursor-pointer' size={15} onClick={e => handleClose()} />
 
@@ -49,39 +48,30 @@ const PreviewModal = ({ open, handleModal, data, listImport, files, setFiles, ge
       return `${(Math.round(size / 100) / 10).toFixed(1)} kb`
     }
   }
-  const listThieuFile = listImport
-    ?.filter(e => !files.find(file => file.name === e[11])) // Filter missing files
-    .map((e, index) => (
-      <span key={index} style={{ color: 'red' }}>
-        {e[11]}
-        {index < listImport.length - 1 ? ', ' : ''} {/* Add comma if it's not the last file */}
-      </span>
-    ))
-  // Lấy danh sách các tệp thừa
-  const listThuaFile = files
-    ?.filter(file => !listImport.find(e => e[11] === file.name)) // Filter surplus files
-    .map((file, index) => (
-      <span key={index} style={{ color: 'blue' }}>
-        {file.name}
-        {index < files.length - 1 ? ', ' : ''} {/* Add comma if it's not the last file */}
-      </span>
-    ))
 
-  // const fileList = files.map((file, index) => (
-  //   <Col md='2' sm='6'>
-  //     <ListGroupItem key={`${file.name}-${index}`} className='d-flex align-items-start justify-content-between'>
-  //       <div className='file-details d-flex align-items-center'>
-  //         <div className='file-preview me-1'>{renderFilePreview(file)}</div>
-  //         <div>
-  //           <p className='file-name mb-0' style={{ marginRight: "0.2rem" }}>{file.name}</p>
-  //         </div>
-  //       </div>
-  //       <Button color='danger' outline size='sm' className='btn-icon' onClick={() => handleRemoveFile(file)}>
-  //         <X size={14} />
-  //       </Button>
-  //     </ListGroupItem>
-  //   </Col>
-  // ))
+
+  useEffect(() => {
+    const listThieuFile = listImport
+      ?.filter(e => !files.find(file => file.name === e[11])) // Filter missing files
+      .map((e, index) => (
+        <span key={index} style={{ color: 'red' }}>
+          {e[11]}
+          {index < listImport.length - 1 ? ', ' : ''} {/* Add comma if it's not the last file */}
+        </span>
+      ))
+    setListThieuFile(listThieuFile)
+    // Lấy danh sách các tệp thừa
+    const listThuaFile = files
+      ?.filter(file => !listImport.find(e => e[11] === file.name)) // Filter surplus files
+      .map((file, index) => (
+        <span key={index} style={{ color: 'blue' }}>
+          {file.name}
+          {index < files.length - 1 ? ', ' : ''} {/* Add comma if it's not the last file */}
+        </span>
+      ))
+    setListThuaFile(listThuaFile)
+  }, [listImport, files])
+
   const fileList = files.map((file, index) => (
     <Col md='2' sm='6' key={`${file.name}-${index}`} className='mb-3'>
       <ListGroupItem className='d-flex align-items-start justify-content-between' style={{ padding: '0.5rem', border: '1px solid #ddd', borderRadius: '5px' }}>
