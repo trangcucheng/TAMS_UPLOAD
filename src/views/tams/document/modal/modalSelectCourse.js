@@ -67,7 +67,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
 
     // ** State
     const [fileExcel, setFileExcel] = useState()
-    const [files, setFiles] = useState()
+    const [files, setFiles] = useState([])
     const [listCourse, setListCourse] = useState([])
     const [loadingAdd, setLoadingAdd] = useState(false)
     const [successMessage, setSuccessMessage] = useState('')
@@ -133,7 +133,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     const handleChangeFile = (event) => {
         const file = event.target.files[0]
         setFileExcel(file)
-        setValue('file', file) // Cập nhật giá trị vào form
+        // setValue('file', file) // Cập nhật giá trị vào form
         readXlsxFile(file).then((rows) => {
             const temp = []
             rows.forEach((item, index) => {
@@ -158,7 +158,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
 
     const onSubmit = (data) => {
         setLoadingAdd(true)
-        const files_ = files
+        // const files_ = files
         const formData = new FormData()
         formData.append('excel', fileExcel)
         formData.append('courseId', data.course.value)
@@ -188,6 +188,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
             }
             setFileExcel()
             setFiles()
+            handleCloseModal()
         }).catch(error => {
             console.log(error)
         }).finally(() => {
@@ -198,7 +199,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     const handleChangeFolder = (event) => {
         const fileList = event.target.files
         const fileArray = Array.from(fileList)
-        setValue('folder', fileArray) // Cập nhật giá trị vào form
+        // setValue('folder', fileArray) // Cập nhật giá trị vào form
 
         setFiles(fileArray)
 
@@ -207,7 +208,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
 
         // Reset lại input file
         if (folderInputRef.current) {
-            folderInputRef.current.value = null // Reset giá trị input
+            folderInputRef.current.value = undefined // Reset giá trị input
         }
     }
 

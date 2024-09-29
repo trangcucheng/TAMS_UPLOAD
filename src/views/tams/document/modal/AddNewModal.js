@@ -144,7 +144,7 @@ const AddNewDocument = ({ open, handleModal, getData }) => {
             formData.append("description", data.description)
         }
         formData.append("title", data.title)
-        formData.append("courseId", 0)
+        formData.append("courseId", 1)
         formData.append("majorId", data.major.value)
         formData.append("typeId", data.documentType.value)
         formData.append("sourceId", data.source.value)
