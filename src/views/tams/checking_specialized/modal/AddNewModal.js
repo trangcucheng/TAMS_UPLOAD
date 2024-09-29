@@ -147,7 +147,7 @@ const AddNewCheckingDocument = ({ open, handleModal, getData }) => {
                         confirmButton: "btn btn-danger"
                     }
                 })
-            }                
+            }
             setValue('title', '')
             setValue('author', '')
             setValue('description', '')
@@ -241,10 +241,16 @@ const AddNewCheckingDocument = ({ open, handleModal, getData }) => {
                             name='file'
                             control={control}
                             render={({ field }) => (
-                                <Input {...field} id='file' type='file' placeholder='Chọn tài liệu' invalid={errors.file && true} onChange={(event) => {
-                                    handleChangeFile(event)
-                                    field.onChange(event)
-                                }} />
+                                <Input
+                                    {...field}
+                                    id='file'
+                                    type='file'
+                                    placeholder='Chọn tài liệu'
+                                    invalid={errors.file && true}
+                                    onChange={(event) => {
+                                        handleChangeFile(event)
+                                        field.onChange(event)
+                                    }} />
                             )}
                         />
                         {errors.file && <FormFeedback>{errors.file.message}</FormFeedback>}

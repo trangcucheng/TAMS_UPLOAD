@@ -610,7 +610,7 @@ const Document = () => {
                 getData={getData}
                 currentPage={currentPage}
                 rowsPerPage={rowsPerPage}
-                // file
+            // file
             />
             {
                 info && <EditModal

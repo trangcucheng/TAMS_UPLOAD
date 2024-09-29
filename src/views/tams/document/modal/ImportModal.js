@@ -306,7 +306,7 @@ const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) =
         })
         if (temp.length === 0) {
             const dataTemp = data.map((item, index) => {
-                return {...item, id: index + 1}
+                return { ...item, id: index + 1 }
             })
             setDisable(false)
             setDataImport(dataTemp)

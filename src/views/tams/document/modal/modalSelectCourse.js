@@ -80,50 +80,6 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
 
     const handleModalPreview = () => setModalPreview(!modalPreview)
 
-    const getAllDataPromises = async () => {
-        try {
-            const coursePromise = getCourse({ params: { page: 1, perPage: 10, search: '' } })
-            const promises = [coursePromise]
-            const results = await Promise.allSettled(promises)
-
-            // Tạo mảng để lưu trữ các course thành công
-            const courses = []
-
-            results.forEach((result, index) => {
-                if (result.status === 'fulfilled') {
-                    // Xử lý kết quả thành công
-                    const courseRes = result.value
-                    const formattedCourses = courseRes?.data?.map((res) => ({
-                        value: res.id,
-                        label: `${res.name}`,
-                    }))
-
-                    courses.push(...formattedCourses)
-                } else {
-                    console.error(`Lỗi trong promise ${index}:`, result.reason)
-                }
-            })
-
-            // Chỉ gọi setListCourse một lần sau khi hoàn tất xử lý
-            setListCourse(
-                courses.sort((a, b) => {
-                    if (a.value === 1) return -1 // Đưa phần tử có id = 1 lên đầu
-                    if (b.value === 1) return 1 // Đưa phần tử có id = 1 lên đầu
-                    return 0 // Giữ nguyên thứ tự của các phần tử còn lại
-                })
-            )
-        } catch (error) {
-            console.error('Lỗi khi gọi API:', error)
-            setListCourse(null)
-        }
-    }
-
-    // useEffect(() => {
-    //     if (open) {
-    //         getAllDataPromises()
-    //     }
-    // }, [open])
-
     const handleCloseModal = () => {
         handleModal()
         reset()
@@ -131,7 +87,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
 
     const handleChangeFile = (event) => {
         const file = event.target.files[0]
-    
+
         if (!file || !file.name.endsWith('.xlsx')) {
             MySwal.fire({
                 icon: "error",
@@ -143,19 +99,18 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
             })
             return
         }
-    
+
         // Tạo biến tạm thời để lưu file trước khi set vào state
         const selectedFile = file
-    
+
         setFileExcel(selectedFile) // Lưu file vào state
-    
+
         // Đọc file và xử lý sau đó
         readXlsxFile(selectedFile).then((rows) => {
             const temp = rows.slice(4) // Cắt mảng từ hàng bắt đầu
-    
             setListImport(temp) // Lưu danh sách sau khi xử lý
             setModalImportFile(true) // Mở modal hiển thị kết quả import
-    
+
         }).catch(error => {
             MySwal.fire({
                 icon: "error",
@@ -235,9 +190,14 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                 </div>
                 <Row tag='form' className='gy-1 pt-75' onSubmit={handleSubmit(onSubmit)}>
                     <Col xs={12}>
-                        <Label className='form-label' for='file'>
-                            Danh sách tài liệu <span style={{ color: 'red' }}>(*)</span>
-                        </Label>
+                        <div className='d-flex justify-content-between'>
+                            <Label className='form-label' for='file'>
+                                Danh sách tài liệu <span style={{ color: 'red' }}>(*)</span>
+                            </Label>
+                            {/* {
+                                listImport?.length > 0 && <small style={{ color: "#09a863", cursor: "pointer" }} onClick={() => setModalImportFile(true)}>Chi tiết tài liệu</small>
+                            } */}
+                        </div>
                         <Controller
                             name='file'
                             control={control}
@@ -255,9 +215,14 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                         {errors.file && <FormFeedback>{errors.file.message}</FormFeedback>}
                     </Col>
                     <Col xs={12}>
-                        <Label className='form-label' for='folder'>
-                            Thư mục tài liệu <span style={{ color: 'red' }}>(*)</span>
-                        </Label>
+                        <div className='d-flex justify-content-between'>
+                            <Label className='form-label' for='folder'>
+                                Thư mục tài liệu <span style={{ color: 'red' }}>(*)</span>
+                            </Label>
+                            {/* {
+                                files?.length > 0 && <small style={{ color: "#09a863", cursor: "pointer" }} onClick={() => setModalPreview(true)}>Chi tiết các tệp tải lên</small>
+                            } */}
+                        </div>
                         <Controller
                             name='folder'
                             control={control}
@@ -302,7 +267,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
             {
                 listImport && files && <PreviewModal open={modalPreview} getData={getData} handleModal={handleModalPreview} listImport={listImport} files={files} setFiles={setFiles}></PreviewModal>
             }
-        </Modal>
+        </Modal >
     )
 }
 const ImportModal = React.lazy(() => import("./ImportModal"))
