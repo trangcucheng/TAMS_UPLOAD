@@ -13,6 +13,7 @@ import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { useForm, Controller } from 'react-hook-form'
 import { Facebook, Twitter, Mail, GitHub, HelpCircle, Coffee, X } from 'react-feather'
+import { Card, CardBody, CardTitle, CardText, Form, Label, Input, Button, Row, Col, Alert, UncontrolledTooltip, FormText } from 'reactstrap'
 
 // ** Actions
 import { handleLogin } from '@store/authentication'
@@ -28,8 +29,6 @@ import classnames from 'classnames'
 // ** Utils
 import { getHomeRouteForLoggedInUser, isObjEmpty } from '@utils'
 
-// ** Reactstrap Imports
-import { Row, Col, Form, Input, Label, Alert, Button, CardText, CardTitle, UncontrolledTooltip, FormText } from 'reactstrap'
 import { MESSAGES, MESSAGES_MEAN, LIST_ROLE } from '../../../utility/constant'
 
 // import API
@@ -121,26 +120,20 @@ const Login = () => {
   }
 
   return (
-    <div className='auth-wrapper auth-cover'>
-      <Row className='auth-inner m-0'>
-        <Link className='brand-logo' to='/' onClick={e => e.preventDefault()}>
-        </Link>
-        <Col className='d-none d-lg-flex align-items-center' lg='8' sm='12' style={{ padding: '0' }}>
-          <div className='w-100 d-lg-flex align-items-center justify-content-center' style={{ height: '100%' }}>
-            <img className='img-fluid w-100' src={source} alt='Login Cover' style={{ height: '100%', width: '100%' }} />
-          </div>
-        </Col>
-        <Col className='d-flex align-items-center auth-bg px-2 p-lg-5' lg={4} sm='12'>
-          <Col className='px-xl-2 mx-auto' sm='8' md='6' lg='12'>
-            <img className='fallback-logo d-flex m-auto' src={logo} alt='logo' style={{ width: "12rem" }} />
+    <div className='auth-wrapper auth-basic px-2'>
+      <div className='auth-inner my-2'>
+        <Card className='mb-0'>
+          <CardBody>
+            <Link className='brand-logo' to='/' onClick={e => e.preventDefault()}>
+              <img className='fallback-logo d-flex m-auto' src={logo} alt='logo' style={{ width: "12rem" }} />
+
+            </Link>
             <CardTitle tag='h1' className='fw-bold mb-1' style={{ textAlign: 'center', marginBottom: '4rem', marginTop: '1rem' }}>
-              Học viện Chính trị
+              Tổng cục Chính trị
             </CardTitle>
             <CardTitle tag='h2' className='fw-bold mb-1' style={{ textAlign: 'center', marginTop: '2rem' }}>
-              Hệ thống cập nhật dữ liệu phục vụ phát hiện đạo văn            </CardTitle>
-            {/* <CardTitle tag='h2' className='fw-bold mb-1' style={{ textAlign: 'center', marginTop: '2rem' }}>
-              Hệ thống quản lý Nhà trường thông minh
-            </CardTitle> */}
+              Hệ thống cập nhật dữ liệu phục vụ phát hiện đạo văn
+            </CardTitle>
             {
               loginErr !== '' && <Alert color='danger' style={{ padding: '5px', textAlign: 'center' }}>
                 {loginErr}
@@ -193,32 +186,9 @@ const Login = () => {
                 }
               </Button>
             </Form>
-            {/* <p className='text-center mt-2'>
-              <span className='me-25'>New on our platform?</span>
-              <Link to='/register'>
-                <span>Create an account</span>
-              </Link>
-            </p>
-            <div className='divider my-2'>
-              <div className='divider-text'>or</div>
-            </div> */}
-            {/* <div className='auth-footer-btn d-flex justify-content-center'>
-              <Button color='facebook'>
-                <Facebook size={14} />
-              </Button>
-              <Button color='twitter'>
-                <Twitter size={14} />
-              </Button>
-              <Button color='google'>
-                <Mail size={14} />
-              </Button>
-              <Button className='me-0' color='github'>
-                <GitHub size={14} />
-              </Button>
-            </div> */}
-          </Col>
-        </Col>
-      </Row>
+          </CardBody>
+        </Card>
+      </div>
     </div>
   )
 }

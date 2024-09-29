@@ -19,7 +19,7 @@ const CardCongratulations = () => {
         <img className='congratulations-img-right' src={decorationRight} alt='decor-right' />
         <Avatar icon={<Award size={28} />} className='shadow' color='primary' size='xl' />
         <div className='text-center'>
-          <h1 className='mb-1 text-white'>Học viện Chính trị</h1>
+          <h1 className='mb-1 text-white'>Tổng cục Chính trị</h1>
           <CardText className='m-auto w-75'>
             Phần mềm chống đạo văn
           </CardText>

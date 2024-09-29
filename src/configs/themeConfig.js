@@ -3,7 +3,7 @@
 //Template config options
 const themeConfig = {
   app: {
-    appName: 'HVCT',
+    appName: 'TCCT',
     appLogoImage: require('@src/assets/images/logo/logo.png').default
   },
   layout: {
