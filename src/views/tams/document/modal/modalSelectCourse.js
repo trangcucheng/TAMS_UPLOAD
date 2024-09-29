@@ -121,10 +121,13 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                     confirmButton: "btn btn-danger"
                 }
             })
+        }).finally(() => {
+            // Reset lại input file
+            if (fileInputRef.current) {
+                fileInputRef.current.value = undefined // Reset giá trị input
+            }
         })
     }
-
-    console.log('aa', fileExcel)
 
     const onSubmit = (data) => {
         setLoadingAdd(true)
