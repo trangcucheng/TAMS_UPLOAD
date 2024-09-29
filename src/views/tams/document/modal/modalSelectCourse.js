@@ -82,6 +82,49 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
 
     const handleModalPreview = () => setModalPreview(!modalPreview)
 
+    const getAllDataPromises = async () => {
+        try {
+            const coursePromise = getCourse({ params: { page: 1, perPage: 10, search: '' } })
+            const promises = [coursePromise]
+            const results = await Promise.allSettled(promises)
+
+            // Tạo mảng để lưu trữ các course thành công
+            const courses = []
+
+            results.forEach((result, index) => {
+                if (result.status === 'fulfilled') {
+                    // Xử lý kết quả thành công
+                    const courseRes = result.value
+                    const formattedCourses = courseRes?.data?.map((res) => ({
+                        value: res.id,
+                        label: `${res.name}`,
+                    }))
+
+                    courses.push(...formattedCourses)
+                } else {
+                    console.error(`Lỗi trong promise ${index}:`, result.reason)
+                }
+            })
+
+            // Chỉ gọi setListCourse một lần sau khi hoàn tất xử lý
+            setListCourse(
+                courses.sort((a, b) => {
+                    if (a.value === 1) return -1 // Đưa phần tử có id = 1 lên đầu
+                    if (b.value === 1) return 1 // Đưa phần tử có id = 1 lên đầu
+                    return 0 // Giữ nguyên thứ tự của các phần tử còn lại
+                })
+            )
+        } catch (error) {
+            console.error('Lỗi khi gọi API:', error)
+            setListCourse(null)
+        }
+    }
+
+    // useEffect(() => {
+    //     if (open) {
+    //         getAllDataPromises()
+    //     }
+    // }, [open])
     const handleCloseModal = () => {
         handleModal()
         reset()
@@ -89,34 +132,40 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
 
     const handleChangeFile = async (event) => {
         const file = event.target.files[0]
-        if (!file) return// Kiểm tra nếu không có file nào được chọn
-        // Tránh set lại state nếu cùng file hoặc lỗi đọc file xảy ra trước đó
-        if (fileExcel && fileExcel.name === file.name) return
-
-        try {
-            const rows = await readXlsxFile(file) // Đọc file Excel
-
-            const temp = []
-            rows.forEach((item, index) => {
-                if (index >= 4) { // Bỏ qua dòng tiêu đề
-                    temp.push(item)
-                }
-            })
-
-            console.log(temp)
-            setListImport(temp) // Cập nhật state sau khi đọc xong
-            setFileExcel(file)// Cập nhật file đã chọn
-            // setModalImportFile(true) // Mở modal
-        } catch (error) {
+        if (!file || !file.name.endsWith('.xlsx')) {
             MySwal.fire({
                 icon: "error",
                 title: "Có lỗi xảy ra",
-                text: "File không đúng định dạng, vui lòng chọn file định dạng excel và nhập đúng các cột",
+                text: "Vui lòng chọn file định dạng Excel (.xlsx)",
                 customClass: {
                     confirmButton: "btn btn-danger"
                 }
             })
+            return
         }
+    
+        // Tạo biến tạm thời để lưu file trước khi set vào state
+        const selectedFile = file
+    
+        setFileExcel(selectedFile) // Lưu file vào state
+    
+        // Đọc file và xử lý sau đó
+        readXlsxFile(selectedFile).then((rows) => {
+            const temp = rows.slice(3) // Cắt mảng từ hàng bắt đầu
+    
+            setListImport(temp) // Lưu danh sách sau khi xử lý
+            setModalImportFile(true) // Mở modal hiển thị kết quả import
+    
+        }).catch(error => {
+            MySwal.fire({
+                icon: "error",
+                title: "Có lỗi xảy ra",
+                text: "File không đúng định dạng, vui lòng chọn file định dạng Excel và nhập đúng các cột",
+                customClass: {
+                    confirmButton: "btn btn-danger"
+                }
+            })
+        })
     }
 
     // Sử dụng useEffect để mở modal
@@ -189,7 +238,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     }, [files]) // Chạy khi listImport thay đổi
 
     return (
-        <Modal isOpen={open} toggle={handleModal} className='modal-dialog-top modal-lg'>
+        <Modal isOpen={open} toggle={handleCloseModal} className='modal-dialog-top modal-lg'>
             <ModalHeader className='bg-transparent' toggle={handleCloseModal}></ModalHeader>
             <ModalBody className='px-sm-3 mx-50 pb-2' style={{ paddingTop: 0 }}>
                 <div className='text-center mb-1'>

@@ -20,12 +20,11 @@ import { toDateString } from '../../../../utility/Utils'
 import { setListDataImport } from '../../../apps/ecommerce/store'
 import dayjs from "dayjs"
 const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) => {
-    console.log(listImport)
-    // if (!listImport && (listImport.length = 0)) {
-    //     if (fileInputRef.current) {
-    //         fileInputRef.current.value = null
-    //     }
-    // }
+    if (!listImport && (listImport.length = 0)) {
+        if (fileInputRef.current) {
+            fileInputRef.current.value = undefined
+        }
+    }
     // ** State
     // ** Custom close btn
     // const [listTDH, setListTDH] = useState(listTDHda)
@@ -207,12 +206,12 @@ const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) =
 
     //
     // list các trường lỗi
-    const checkErr = (listImport) => {
+    const checkErr = (listImport1) => {
         const data = []
         const temp = []
         const listTruong = []
         const listNganh = []
-        listImport?.forEach((row, index) => {
+        listImport1?.forEach((row, index) => {
             //kiểm tra stt
             const infoOneRow = {
                 index: '',
@@ -304,7 +303,11 @@ const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) =
             data.push(infoOneRow)
         })
         if (temp.length === 0) {
-            setDataImport(data)
+            const dataTemp = data.map((item, index) => {
+                return {...item, id: index + 1}
+            })
+            setDisable(false)
+            setDataImport(dataTemp)
             return {
                 key: "data",
                 value: data
