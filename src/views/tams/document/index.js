@@ -66,10 +66,15 @@ const Document = () => {
     const [isAdd, setIsAdd] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
     const [info, setInfo] = useState()
+    const [listImport, setListImport] = useState()
     const [listCourse, setListCourse] = useState([])
     const [listDocumentType, setListDocumentType] = useState([])
     const [listMajor, setListMajor] = useState([])
+    const [modalImportFile, setModalImportFile] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [files, setFiles] = useState([])
+    const [modalPreview, setModalPreview] = useState(false)
+    const [fileExcel, setFileExcel] = useState()
     const [isAddExcel, setIsAddExcel] = useState(false)
     const handleModalAddExcel = () => {
         setIsAddExcel(!isAddExcel)
@@ -352,6 +357,30 @@ const Document = () => {
         }
     }
 
+    const handleImportFile = (e) => {
+        const files = e.target.files[0]
+        setFileExcel(files)
+        readXlsxFile(files).then((rows) => {
+            const temp = []
+            rows.forEach((item, index) => {
+                if (index > 0) {
+                    temp.push(item)
+                }
+            })
+            setListImport(temp)
+            setModalImportFile(true)
+        }).catch(error => {
+            MySwal.fire({
+                icon: "error",
+                title: "Có lỗi xảy ra",
+                text: "File không đúng định dạng, vui lòng chọn file định dạng excel và nhập đúng các cột",
+                customClass: {
+                    confirmButton: "btn btn-danger"
+                }
+            })
+        })
+
+    }
     const onImportFileClick = () => {
         // `current` points to the mounted file input element
         // inputFile.current.click()
@@ -384,6 +413,8 @@ const Document = () => {
         link.click()
         document.body.removeChild(link)
     }
+    const handleModalImportFile = () => setModalImportFile(!modalImportFile)
+    const handleModalPreview = () => setModalPreview(!modalPreview)
 
     const handleFolderUpload = (event) => {
         const fileList = event.target.files
@@ -397,7 +428,7 @@ const Document = () => {
             title="Danh sách tài liệu"
             style={{ backgroundColor: "white", width: "100%", height: "100%" }}
         >
-            {/* <input type='file' id='file' ref={inputFile} style={{ display: 'none' }} onChange={e => handleImportFile(e)} /> */}
+            <input type='file' id='file' ref={inputFile} style={{ display: 'none' }} onChange={e => handleImportFile(e)} />
             {/* <input type='file' id='file' ref={inputFolder} style={{ display: 'none' }} multiple onChange={e => handleImportFileZip(e)} /> */}
             <input
                 ref={inputFolder}
@@ -418,7 +449,7 @@ const Document = () => {
                             <DropdownItem className='w-100' onClick={onImportFileTemplate}>
                                 <span className='align-middle ms-50'>Tải file mẫu</span>
                             </DropdownItem>
-                            <DropdownItem className='w-100' onClick={() => onImportFileClick()}>
+                            <DropdownItem className='w-100' onClick={onImportFileClick}>
                                 <span className='align-middle ms-50'>Nhập danh sách tài liệu từ file excel</span>
                             </DropdownItem>
                             {/* <DropdownItem className='w-100' onClick={onImportFolder}>
@@ -577,6 +608,8 @@ const Document = () => {
                 open={isAddExcel}
                 handleModal={handleModalAddExcel}
                 getData={getData}
+                currentPage={currentPage}
+                rowsPerPage={rowsPerPage}
             // file
             />
             {
@@ -592,15 +625,17 @@ const Document = () => {
             {/* {
                 listImport && <ImportModal open={modalImportFile} getData={getData} handleModal={handleModalImportFile} listImport={listImport} loading={loading} setLoading={setLoading}></ImportModal>
             } */}
-            {/* {
+            {
                 files && <PreviewModal open={modalPreview} getData={getData} handleModal={handleModalPreview} listImport={listImport} loading={loading} setLoading={setLoading} files={files} setFiles={setFiles} fileExcel={fileExcel}></PreviewModal>
-            } */}
+            }
         </Card >
     )
 }
 
 const AddNewModal = React.lazy(() => import("./modal/AddNewModal"))
 const EditModal = React.lazy(() => import("./modal/EditModal"))
+const ImportModal = React.lazy(() => import("./modal/ImportModal"))
+const PreviewModal = React.lazy(() => import("./modal/PreviewModal"))
 const SelectCourseModal = React.lazy(() => import("./modal/modalSelectCourse"))
 
 export default Document 
