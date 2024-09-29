@@ -118,11 +118,11 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         }
     }
 
-    useEffect(() => {
-        if (open) {
-            getAllDataPromises()
-        }
-    }, [open])
+    // useEffect(() => {
+    //     if (open) {
+    //         getAllDataPromises()
+    //     }
+    // }, [open])
 
     const handleCloseModal = () => {
         handleModal()
@@ -131,29 +131,44 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
 
     const handleChangeFile = (event) => {
         const file = event.target.files[0]
-        setFileExcel(file)
-        const startIndex = 4
-        // setValue('file', file) // Cập nhật giá trị vào form
-        readXlsxFile(file).then((rows) => {
-            const temp = []
-            rows.forEach((item, index) => {
-                if (index > startIndex) {
-                    temp.push(item)
+    
+        if (!file || !file.name.endsWith('.xlsx')) {
+            MySwal.fire({
+                icon: "error",
+                title: "Có lỗi xảy ra",
+                text: "Vui lòng chọn file định dạng Excel (.xlsx)",
+                customClass: {
+                    confirmButton: "btn btn-danger"
                 }
             })
-            setListImport(temp)
-            setModalImportFile(true)
+            return
+        }
+    
+        // Tạo biến tạm thời để lưu file trước khi set vào state
+        const selectedFile = file
+    
+        setFileExcel(selectedFile) // Lưu file vào state
+    
+        // Đọc file và xử lý sau đó
+        readXlsxFile(selectedFile).then((rows) => {
+            const temp = rows.slice(3) // Cắt mảng từ hàng bắt đầu
+    
+            setListImport(temp) // Lưu danh sách sau khi xử lý
+            setModalImportFile(true) // Mở modal hiển thị kết quả import
+    
         }).catch(error => {
             MySwal.fire({
                 icon: "error",
                 title: "Có lỗi xảy ra",
-                text: "File không đúng định dạng, vui lòng chọn file định dạng excel và nhập đúng các cột",
+                text: "File không đúng định dạng, vui lòng chọn file định dạng Excel và nhập đúng các cột",
                 customClass: {
                     confirmButton: "btn btn-danger"
                 }
             })
         })
     }
+
+    console.log('aa', fileExcel)
 
     const onSubmit = (data) => {
         setLoadingAdd(true)
@@ -212,7 +227,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     }
 
     return (
-        <Modal isOpen={open} toggle={handleModal} className='modal-dialog-top modal-lg'>
+        <Modal isOpen={open} toggle={handleCloseModal} className='modal-dialog-top modal-lg'>
             <ModalHeader className='bg-transparent' toggle={handleCloseModal}></ModalHeader>
             <ModalBody className='px-sm-3 mx-50 pb-2' style={{ paddingTop: 0 }}>
                 <div className='text-center mb-1'>

@@ -22,7 +22,7 @@ import dayjs from "dayjs"
 const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) => {
     if (!listImport && (listImport.length = 0)) {
         if (fileInputRef.current) {
-            fileInputRef.current.value = null
+            fileInputRef.current.value = undefined
         }
     }
     // ** State
@@ -177,43 +177,43 @@ const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) =
             dataIndex: 'fileName',
             // selector: row => row.fileName,
         },
-        {
-            title: "Thao tác",
-            width: 100,
-            align: "center",
-            render: (record) => (
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Tooltip placement="top" title="Chỉnh sửa">
-                        <EditOutlined
-                            style={{ color: "#09A863", cursor: 'pointer', marginRight: '1rem' }}
-                            onClick={() => handleEdit(record)}
-                        />
-                    </Tooltip>
-                    <Popconfirm
-                        title="Bạn chắc chắn xóa?"
-                        onConfirm={() => handleDelete(record.id)}
-                        cancelText="Hủy"
-                        okText="Đồng ý"
-                    >
-                        <Tooltip placement="top" title="Xóa">
-                            <DeleteOutlined style={{ color: "red", cursor: 'pointer' }} id={`tooltip_delete${record.ID}`} />
-                        </Tooltip>
-                    </Popconfirm>
-                </div>
-            ),
-        },
+        // {
+        //     title: "Thao tác",
+        //     width: 100,
+        //     align: "center",
+        //     render: (record) => (
+        //         <div style={{ display: "flex", justifyContent: "center" }}>
+        //             <Tooltip placement="top" title="Chỉnh sửa">
+        //                 <EditOutlined
+        //                     style={{ color: "#09A863", cursor: 'pointer', marginRight: '1rem' }}
+        //                     onClick={() => handleEdit(record)}
+        //                 />
+        //             </Tooltip>
+        //             <Popconfirm
+        //                 title="Bạn chắc chắn xóa?"
+        //                 onConfirm={() => handleDelete(record.id)}
+        //                 cancelText="Hủy"
+        //                 okText="Đồng ý"
+        //             >
+        //                 <Tooltip placement="top" title="Xóa">
+        //                     <DeleteOutlined style={{ color: "red", cursor: 'pointer' }} id={`tooltip_delete${record.ID}`} />
+        //                 </Tooltip>
+        //             </Popconfirm>
+        //         </div>
+        //     ),
+        // },
     ]
     const CloseBtn = <X className='cursor-pointer' size={15} onClick={handleModal_} />
     const chunk = (arr, size) => Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => arr.slice((i * size), (size * (i + 1))))
 
     //
     // list các trường lỗi
-    const checkErr = (listImport) => {
+    const checkErr = (listImport1) => {
         const data = []
         const temp = []
         const listTruong = []
         const listNganh = []
-        listImport?.forEach((row, index) => {
+        listImport1?.forEach((row, index) => {
             //kiểm tra stt
             const infoOneRow = {
                 index: '',
@@ -305,8 +305,11 @@ const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) =
             data.push(infoOneRow)
         })
         if (temp.length === 0) {
+            const dataTemp = data.map((item, index) => {
+                return {...item, id: index + 1}
+            })
             setDisable(false)
-            setDataImport(data)
+            setDataImport(dataTemp)
         }
         return temp
     }
