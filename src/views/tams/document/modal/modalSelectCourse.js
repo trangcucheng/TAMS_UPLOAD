@@ -65,7 +65,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     const MySwal = withReactContent(Swal)
 
     // ** State
-    const [fileExcel, setFileExcel] = useState(null)
+    const [fileExcel, setFileExcel] = useState()
     const [files, setFiles] = useState([])
     const [listCourse, setListCourse] = useState([])
     const [loadingAdd, setLoadingAdd] = useState(false)
@@ -77,7 +77,52 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     const [loading, setLoading] = useState(false)
     const [canSubmit, setCanSubmit] = useState(false)
     const [modalPreview, setModalPreview] = useState(false)
+
     const handleModalPreview = () => setModalPreview(!modalPreview)
+
+    const getAllDataPromises = async () => {
+        try {
+            const coursePromise = getCourse({ params: { page: 1, perPage: 10, search: '' } })
+            const promises = [coursePromise]
+            const results = await Promise.allSettled(promises)
+
+            // Tạo mảng để lưu trữ các course thành công
+            const courses = []
+
+            results.forEach((result, index) => {
+                if (result.status === 'fulfilled') {
+                    // Xử lý kết quả thành công
+                    const courseRes = result.value
+                    const formattedCourses = courseRes?.data?.map((res) => ({
+                        value: res.id,
+                        label: `${res.name}`,
+                    }))
+
+                    courses.push(...formattedCourses)
+                } else {
+                    console.error(`Lỗi trong promise ${index}:`, result.reason)
+                }
+            })
+
+            // Chỉ gọi setListCourse một lần sau khi hoàn tất xử lý
+            setListCourse(
+                courses.sort((a, b) => {
+                    if (a.value === 1) return -1 // Đưa phần tử có id = 1 lên đầu
+                    if (b.value === 1) return 1 // Đưa phần tử có id = 1 lên đầu
+                    return 0 // Giữ nguyên thứ tự của các phần tử còn lại
+                })
+            )
+        } catch (error) {
+            console.error('Lỗi khi gọi API:', error)
+            setListCourse(null)
+        }
+    }
+
+    useEffect(() => {
+        if (open) {
+            getAllDataPromises()
+        }
+    }, [open])
 
     const handleCloseModal = () => {
         handleModal()
@@ -87,8 +132,8 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     const handleChangeFile = (event) => {
         const file = event.target.files[0]
         setFileExcel(file)
-        setValue('file', file) // Cập nhật giá trị vào form
         const startIndex = 4
+        // setValue('file', file) // Cập nhật giá trị vào form
         readXlsxFile(file).then((rows) => {
             const temp = []
             rows.forEach((item, index) => {
@@ -112,6 +157,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
 
     const onSubmit = (data) => {
         setLoadingAdd(true)
+        // const files_ = files
         const formData = new FormData()
         formData.append('excel', fileExcel)
         formData.append('courseId', 1)
@@ -141,6 +187,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
             }
             setFileExcel()
             setFiles()
+            handleCloseModal()
         }).catch(error => {
             console.log(error)
         }).finally(() => {
@@ -151,7 +198,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     const handleChangeFolder = (event) => {
         const fileList = event.target.files
         const fileArray = Array.from(fileList)
-        setValue('folder', fileArray) // Cập nhật giá trị vào form
+        // setValue('folder', fileArray) // Cập nhật giá trị vào form
 
         setFiles(fileArray)
 
