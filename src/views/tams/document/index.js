@@ -622,20 +622,12 @@ const Document = () => {
                     rowsPerPage={rowsPerPage}
                 />
             }
-            {/* {
-                listImport && <ImportModal open={modalImportFile} getData={getData} handleModal={handleModalImportFile} listImport={listImport} loading={loading} setLoading={setLoading}></ImportModal>
-            } */}
-            {
-                files && <PreviewModal open={modalPreview} getData={getData} handleModal={handleModalPreview} listImport={listImport} loading={loading} setLoading={setLoading} files={files} setFiles={setFiles} fileExcel={fileExcel}></PreviewModal>
-            }
         </Card >
     )
 }
 
 const AddNewModal = React.lazy(() => import("./modal/AddNewModal"))
 const EditModal = React.lazy(() => import("./modal/EditModal"))
-const ImportModal = React.lazy(() => import("./modal/ImportModal"))
-const PreviewModal = React.lazy(() => import("./modal/PreviewModal"))
 const SelectCourseModal = React.lazy(() => import("./modal/modalSelectCourse"))
 
 export default Document 
