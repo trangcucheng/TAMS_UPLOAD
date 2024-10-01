@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 
 const Document = lazy(() => import('../../views/tams/document'))
+const Document_Citation = lazy(() => import('../../views/tams/document_citation'))
 const DocumentStatistic = lazy(() => import('../../views/tams/document_statistic'))
 const CheckingDocument = lazy(() => import('../../views/tams/checking_document'))
 const CheckingSpecialized = lazy(() => import('../../views/tams/checking_specialized'))
@@ -19,6 +20,10 @@ const TamsRoutes = [
     {
         path: '/tams/document',
         element: <Document />
+    },
+    {
+        path: '/tams/document_citation',
+        element: <Document_Citation />
     },
     {
         path: '/tams/document-statistic',

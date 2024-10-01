@@ -61,9 +61,18 @@ export default [
   },
   {
     id: 'document',
-    title: 'QL kho tài liệu mẫu',
+    title: 'Tài liệu kiểm tra',
     icon: <FileText size={12} />,
     navLink: '/tams/document',
+    action: 'read',
+    resource: 'QL_KHO_TAI_LIEU_MAU',
+    role: 0
+  },
+  {
+    id: 'document_',
+    title: 'Tài liệu trích dẫn',
+    icon: <FileText size={12} />,
+    navLink: '/tams/document_citation',
     action: 'read',
     resource: 'QL_KHO_TAI_LIEU_MAU',
     role: 0
