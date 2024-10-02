@@ -36,11 +36,9 @@ const ImportModal = ({ open, getData, handleModal, listImport, fileInputRef }) =
     const [dataImport, setDataImport] = useState([])
     const [disabled, setDisable] = useState(true)
     const listColumn = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
-    useEffect(() => {
 
-    }, [listImport])
     const handleModal_ = () => {
-        setDataImport([])
+        // setDataImport([])
         handleModal()
     }
     const columnsErr = [

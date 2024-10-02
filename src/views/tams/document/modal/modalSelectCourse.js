@@ -34,6 +34,7 @@ import classNames from "classnames"
 import { postCheckingDocumentVersion } from "../../../../api/checking_document_version"
 import withReactContent from "sweetalert2-react-content"
 import { postFromExcel } from "../../../../api/checking_document_version_by_word"
+import ExcelJS from 'exceljs' // Import thư viện exceljs
 
 const SelectCourseModal = ({ open, handleModal, getData }) => {
     const fileInputRef = useRef(null) // Tạo ref cho input file
@@ -100,13 +101,13 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
             return
         }
 
-        // Tạo biến tạm thời để lưu file trước khi set vào state
-        const selectedFile = file
-
-        setFileExcel(selectedFile) // Lưu file vào state
+        // Nếu file không thay đổi, không gọi setFileExcel
+        if (fileExcel !== file) {
+            setFileExcel(file) // Lưu file vào state
+        }
 
         // Đọc file và xử lý sau đó
-        readXlsxFile(selectedFile).then((rows) => {
+        readXlsxFile(file).then((rows) => {
             const temp = rows.slice(4) // Cắt mảng từ hàng bắt đầu
             setListImport(temp) // Lưu danh sách sau khi xử lý
             setModalImportFile(true) // Mở modal hiển thị kết quả import
@@ -120,6 +121,11 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                     confirmButton: "btn btn-danger"
                 }
             })
+        }).finally(() => {
+            // Reset lại input file
+            if (fileInputRef.current) {
+                fileInputRef.current.value = undefined // Reset giá trị input
+            }
         })
     }
 
@@ -134,8 +140,6 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
             }
         }
     }, [open])
-
-    console.log('aa', fileExcel)
 
     const onSubmit = (data) => {
         setLoadingAdd(true)
@@ -167,8 +171,8 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                     }
                 })
             }
-            setFileExcel()
-            setFiles()
+            setFileExcel(null)
+            setFiles([])
             handleCloseModal()
         }).catch(error => {
             console.log(error)
@@ -213,9 +217,11 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                         <Controller
                             name='file'
                             control={control}
+                            defaultValue={undefined}
                             render={({ field }) => (
                                 <Input {...field} id='file'
                                     type='file'
+                                    value={undefined}
                                     placeholder='Chọn tài liệu'
                                     ref={fileInputRef}
                                     invalid={errors.file && true} onChange={(event) => {
@@ -238,8 +244,10 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                         <Controller
                             name='folder'
                             control={control}
+                            value={undefined}
                             render={({ field }) => (
                                 <Input
+                                    value={undefined}
                                     {...field}
                                     id='folder'
                                     type='file'

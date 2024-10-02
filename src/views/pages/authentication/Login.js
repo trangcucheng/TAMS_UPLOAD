@@ -137,8 +137,7 @@ const Login = () => {
               Học viện Chính trị
             </CardTitle>
             <CardTitle tag='h2' className='fw-bold mb-1' style={{ textAlign: 'center', marginTop: '2rem' }}>
-              Phần mềm phát hiện đạo văn
-            </CardTitle>
+              Hệ thống cập nhật dữ liệu phục vụ phát hiện đạo văn            </CardTitle>
             {/* <CardTitle tag='h2' className='fw-bold mb-1' style={{ textAlign: 'center', marginTop: '2rem' }}>
               Hệ thống quản lý Nhà trường thông minh
             </CardTitle> */}
