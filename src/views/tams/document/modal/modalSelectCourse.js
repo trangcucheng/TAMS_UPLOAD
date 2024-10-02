@@ -129,6 +129,18 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         })
     }
 
+    // Khi đóng modal, reset giá trị của input
+    useEffect(() => {
+        if (!open) {
+            reset({
+                file: null, // Đặt giá trị file về null khi tắt modal
+            })
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '' // Xóa giá trị của input file
+            }
+        }
+    }, [open])
+
     const onSubmit = (data) => {
         setLoadingAdd(true)
         // const files_ = files

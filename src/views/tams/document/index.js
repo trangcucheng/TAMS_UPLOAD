@@ -1,4 +1,4 @@
-import { Table, Input, Card, CardTitle, Tag, Popconfirm, Switch, Select, Spin, Tooltip, DatePicker } from "antd"
+import { Table, Input, Card, CardTitle, Tag, Popconfirm, Switch, Select, Spin, Tooltip, DatePicker, message } from "antd"
 import React, { useState, Fragment, useEffect, useRef, useContext } from "react"
 import {
     Label,
@@ -40,6 +40,8 @@ import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 import "@styles/react/libs/flatpickr/flatpickr.scss"
 import dayjs from "dayjs"
 import readXlsxFile from 'read-excel-file/web-worker'
+import { dataPreprocessing } from "../../../api/root"
+import toast from "react-hot-toast"
 
 const oneWeekAgo = new Date()
 oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
@@ -423,6 +425,17 @@ const Document = () => {
         // Lưu trữ các file đã upload
         setFiles(fileArray)
     }
+
+    const handleDataPreprocessing = () => {
+        dataPreprocessing().then(res => {
+            if (res) {
+                toast.success(message)
+            }
+        }).catch(error => {
+            toast.error(error.message)
+        })
+    }
+
     return (
         <Card
             title="Danh sách tài liệu"
@@ -439,8 +452,22 @@ const Document = () => {
                 style={{ display: 'none' }}
             />
             <Row style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", height: "40px" }} className="mb-1">
-                <Col className="col col-2" style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <UncontrolledButtonDropdown style={{ width: "120px" }}>
+                <Col className="col col-3" style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button
+                        // className='ms-2' color='primary'
+                        onClick={handleDataPreprocessing}
+                        color="primary"
+                        // className="ms-2"
+                        style={{
+                            height: "40px",
+                        }}
+                    >
+                        {/* <Plus size={15} className="mr-2" style={{ marginRight: "2px" }} /> */}
+                        Tiền xử lý dữ liệu
+                    </Button>
+                </Col>
+                <Col className="col col-2" style={{ display: "flex", justifyContent: "flex-end", width: '180px'}}>
+                    <UncontrolledButtonDropdown>
                         <DropdownToggle color='secondary' caret outline>
                             <File size={15} />
                             <span className='align-middle ms-50'>Nhập tài liệu</span>
@@ -458,14 +485,13 @@ const Document = () => {
                         </DropdownMenu>
                     </UncontrolledButtonDropdown>
                 </Col>
-                <Col className="col col-2" style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Col className="col col-2" style={{ display: "flex", justifyContent: "flex-end", paddingLeft: 0, width: '125px'}}>
                     <Button
                         // className='ms-2' color='primary'
                         onClick={(e) => setIsAdd(true)}
                         color="primary"
-                        className="ms-2"
+                        // className="ms-2"
                         style={{
-                            width: '115px',
                             height: "40px",
                             // padding: "8px 15px!important"
                         }}
