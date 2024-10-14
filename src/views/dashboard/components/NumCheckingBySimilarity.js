@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardBody, CardSubtitle, Badge } from 'reac
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { toDateStringv2 } from '../../../utility/Utils'
 import { useEffect, useState } from 'react'
-import { getCheckingDocumentStatisticByDuplicate } from '../../../api/checking_document_statistic'
+import { getCheckingDocumentStatisticByDuplicate } from '../../../api/document'
 
 const { RangePicker } = DatePicker
 

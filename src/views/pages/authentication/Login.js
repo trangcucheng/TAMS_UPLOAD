@@ -32,15 +32,15 @@ import { getHomeRouteForLoggedInUser, isObjEmpty } from '@utils'
 import { MESSAGES, MESSAGES_MEAN, LIST_ROLE } from '../../../utility/constant'
 
 // import API
-import { login } from '../../../api/authentication'
-import { getDetailUser } from '../../../api/users'
-import { getPerByRoleId } from '../../../api/rolePermissions'
+// import { login } from '../../../api/authentication'
+// import { getDetailUser } from '../../../api/users'
+// import { getPerByRoleId } from '../../../api/rolePermissions'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 // ** Styles
 import '@styles/react/pages/page-authentication.scss'
 import style from '../../../assets/scss/index.module.scss'
-import { getPermissionByRole } from '../../../api/permissions'
+// import { getPermissionByRole } from '../../../api/permissions'
 
 const ToastContent = ({ t, name, role }) => {
   return (

@@ -20,8 +20,6 @@ const EcommerceCheckout = lazy(() => import('../../views/apps/ecommerce/checkout
 const UserList = lazy(() => import('../../views/apps/user/list'))
 const UserView = lazy(() => import('../../views/apps/user/view'))
 
-const Roles = lazy(() => import('../../views/nentangloi/quanlyhethong/roles-permissions/roles'))
-const Permissions = lazy(() => import('../../views/nentangloi/quanlyhethong/roles-permissions/permissions'))
 
 const AppRoutes = [
     {
@@ -174,14 +172,14 @@ const AppRoutes = [
         element: <UserView />,
         path: '/apps/user/view/:id'
     },
-    {
-        element: <Roles />,
-        path: '/apps/roles'
-    },
-    {
-        element: <Permissions />,
-        path: '/apps/permissions'
-    },
+    // {
+    //     element: <Roles />,
+    //     path: '/apps/roles'
+    // },
+    // {
+    //     element: <Permissions />,
+    //     path: '/apps/permissions'
+    // },
     // {
     //     element: <Homepage />,
     //     path: '/apps/subsystem6/hompage'

@@ -7,7 +7,7 @@ function getAuthToken() {
 }
 
 const API_FormData = axios.create({
-    baseURL: `${process.env.REACT_APP_API_URL_TAMS_TAILIEU}`,
+    baseURL: `${process.env.REACT_APP_API_URL_TAMS_TRICHDAN}`,
     headers: {
         'content-type': 'multipart/form-data'
     },

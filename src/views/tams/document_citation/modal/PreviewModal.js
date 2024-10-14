@@ -10,9 +10,6 @@ import { Card, Modal, Row, Col, CardHeader, CardTitle, CardBody, Button, ListGro
 import { useDropzone } from 'react-dropzone'
 import { FileText, X, DownloadCloud } from 'react-feather'
 import { setListDataImport } from '../../../apps/ecommerce/store'
-// import { uploadZip } from '../../../../api/hoSoDangKi'
-// import responseResultHelper from '../../../utils/reponsive'
-// import { ACTION_METHOD_TYPE } from '../../../utils/constant'
 
 const PreviewModal = ({ open, handleModal, data, listImport, files, setFiles, getData }) => {
   // ** State

@@ -12,8 +12,6 @@ import UiElementRoutes from './UiElements'
 import ExtensionsRoutes from './Extensions'
 import PageLayoutsRoutes from './PageLayouts'
 import AuthenticationRoutes from './Authentication'
-import UsersManageRoutes from './UsersManage'
-import CategoriesRoutes from './Categories'
 // ** Layouts
 import BlankLayout from '@layouts/BlankLayout'
 import VerticalLayout from '@src/layouts/VerticalLayout'
@@ -55,8 +53,6 @@ const Routes = [
     ...FormRoutes,
     ...TablesRoutes,
     ...ChartsRoutes,
-    ...UsersManageRoutes,
-    ...CategoriesRoutes,
     ...DashboardRoutes,
     ...TamsRoutes
 ]

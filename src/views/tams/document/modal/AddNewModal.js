@@ -36,13 +36,16 @@ import { getDocumentType } from "../../../../api/document_type"
 import classNames from "classnames"
 import { Spin } from "antd"
 import { getDocumentSource } from "../../../../api/document_source"
-import { toDateStringv2 } from "../../../../utility/Utils"
+import { getUserData, toDateStringv2 } from "../../../../utility/Utils"
 
 const AddNewDocument = ({ open, handleModal, getData }) => {
+    const user = getUserData()
+    console.log(user._id)
     // ** States
     const AddNewDocumentSchema = yup.object().shape({
         file: yup.mixed().required("Yêu cầu chọn file"),
         title: yup.string().required("Yêu cầu nhập tiêu đề"),
+        language: yup.string().required("Yêu cầu nhập ngôn ngữ"),
         source: yup.object().required("Yêu cầu chọn nguồn tài liệu").nullable(),
         documentType: yup.object().required("Yêu cầu chọn loại tài liệu").nullable(),
         major: yup.object().required("Yêu cầu chọn chuyên ngành").nullable(),
@@ -144,7 +147,8 @@ const AddNewDocument = ({ open, handleModal, getData }) => {
             formData.append("description", data.description)
         }
         formData.append("title", data.title)
-        formData.append("courseId", 1)
+        formData.append("language", data.language)
+        formData.append("courseId", 0)
         formData.append("majorId", data.major.value)
         formData.append("typeId", data.documentType.value)
         formData.append("sourceId", data.source.value)
@@ -153,6 +157,7 @@ const AddNewDocument = ({ open, handleModal, getData }) => {
         formData.append("supervisor", data.supervisor)
         formData.append("publish_date", toDateStringv2(picker))
         formData.append("publish_place", data.place)
+        formData.append("createdById", user._id)
         setLoadingAdd(true)
         postDocument(formData).then(result => {
             if (result.status === "success") {
@@ -190,10 +195,7 @@ const AddNewDocument = ({ open, handleModal, getData }) => {
         })
     }
     return (
-        <Modal
-            isOpen={open}
-            toggle={handleModal}
-            className='modal-dialog-top modal-lg'>
+        <Modal isOpen={open} toggle={handleModal} className='modal-dialog-top modal-lg'>
             <ModalHeader className='bg-transparent' toggle={handleCloseModal}></ModalHeader>
             <ModalBody className='px-sm-3 mx-50 pb-2' style={{ paddingTop: 0 }}>
                 <div className='text-center mb-1'>
@@ -279,6 +281,26 @@ const AddNewDocument = ({ open, handleModal, getData }) => {
                         />
                     </Col>
                     <Col sm={6} xs={12}>
+                        <Label className='form-label' for='language'>
+                            Ngôn ngữ
+                        </Label>
+                        <Controller
+                            control={control}
+                            name='language'
+                            render={({ field }) => {
+                                return (
+                                    <Input
+                                        {...field}
+                                        id='language'
+                                        placeholder='Nhập ngôn ngữ'
+                                        invalid={errors.language && true}
+                                    />
+                                )
+                            }}
+                        />
+                    </Col>
+                    {errors.language && <FormFeedback>{errors.language.message}</FormFeedback>}
+                    <Col sm={6} xs={12}>
                         <Label className='form-label' for='source'>
                             Nguồn tài liệu <span style={{ color: 'red' }}>(*)</span>
                         </Label>
@@ -322,7 +344,7 @@ const AddNewDocument = ({ open, handleModal, getData }) => {
                         />
                         {errors.documentType && <FormFeedback>{errors.documentType.message}</FormFeedback>}
                     </Col>
-                    <Col sm={6} xs={12}>
+                    <Col sm={12} xs={12}>
                         <Label className='form-label' for='major'>
                             Lĩnh vực <span style={{ color: 'red' }}>(*)</span>
                         </Label>
