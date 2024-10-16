@@ -106,6 +106,8 @@ const Login = () => {
       dispatch(setSelectedYear(new Date().getFullYear()))
       localStorage.setItem('accessToken', fakeAccessToken)
       localStorage.setItem('refreshToken', fakeRefreshToken)
+      localStorage.setItem('userName', data.Username)
+
       const permissionArrFormat = [
         {
           action: 'manage',

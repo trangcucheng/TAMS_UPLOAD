@@ -157,7 +157,7 @@ const AddNewDocument = ({ open, handleModal, getData }) => {
         formData.append("supervisor", data.supervisor)
         formData.append("publish_date", toDateStringv2(picker))
         formData.append("publish_place", data.place)
-        formData.append("createdById", user._id)
+        formData.append("createdById", localStorage.getItem('userName') ?? "")
         setLoadingAdd(true)
         postDocument(formData).then(result => {
             if (result.status === "success") {

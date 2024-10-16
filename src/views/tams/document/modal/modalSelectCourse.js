@@ -134,7 +134,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
         const formData = new FormData()
         formData.append('excel', fileExcel)
         formData.append('courseId', 1)
-        formData.append("createdById", user._id)
+        formData.append("createdById", localStorage.getItem('userName') ?? "")
 
         files?.map((file) => {
             formData.append('files', file)
