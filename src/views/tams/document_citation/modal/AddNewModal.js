@@ -28,14 +28,13 @@ import '@styles/react/libs/react-select/_react-select.scss'
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 import "@styles/react/libs/flatpickr/flatpickr.scss"
 import Swal from 'sweetalert2'
-import { postDocument } from "../../../../api/document"
-import { extractingFromFileUpload } from "../../../../api/sentence_doc"
+import { postDocument } from "../../../../api_citation/document"
 import { Loader } from "react-feather"
-import { getMajor } from "../../../../api/major"
-import { getDocumentType } from "../../../../api/document_type"
+import { getMajor } from "../../../../api_citation/major"
+import { getDocumentType } from "../../../../api_citation/document_type"
 import classNames from "classnames"
 import { Spin } from "antd"
-import { getDocumentSource } from "../../../../api/document_source"
+import { getDocumentSource } from "../../../../api_citation/document_source"
 import { getUserData, toDateStringv2 } from "../../../../utility/Utils"
 
 const AddNewDocument = ({ open, handleModal, getData }) => {

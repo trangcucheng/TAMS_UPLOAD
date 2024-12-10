@@ -6,8 +6,8 @@ function getAuthToken() {
     return window.localStorage.getItem("accessToken") ?? ""
 }
 
-const API_FormData = axios.create({
-    baseURL: `${process.env.REACT_APP_API_URL_TAMS_TAILIEU}`,
+const API_FormData_CheckingUpload_XX = axios.create({
+    baseURL: `${process.env.REACT_APP_API_URL_TAMS_TRICHDAN}`,
     headers: {
         'content-type': 'multipart/form-data'
     },
@@ -17,7 +17,7 @@ const API_FormData = axios.create({
     }
 })
 
-API_FormData.interceptors.request.use(async (config) => {
+API_FormData_CheckingUpload_XX.interceptors.request.use(async (config) => {
     //hanlde tooken...
     config.headers = {
         ...(config.headers ?? {})
@@ -25,7 +25,7 @@ API_FormData.interceptors.request.use(async (config) => {
     return { ...config }
 })
 
-API_FormData.interceptors.response.use((response) => {
+API_FormData_CheckingUpload_XX.interceptors.response.use((response) => {
     if (response && response.data) {
         return response.data
     }
@@ -48,4 +48,4 @@ API_FormData.interceptors.response.use((response) => {
     return error
 })
 
-export { API_FormData }
+export { API_FormData_CheckingUpload_XX }

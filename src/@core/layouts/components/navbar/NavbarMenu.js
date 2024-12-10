@@ -16,7 +16,6 @@ import { setSelectedRole } from "../../../../views/apps/ecommerce/store/index.js
 import { getHomeRouteForLoggedInUser } from "../../../../utility/Utils.js"
 import * as IconReact from "react-feather"
 // import * as IconAntd from '@ant-design/icons'
-import { ssoLink } from "../../../../api/authentication.js"
 
 const NavbarMenu = () => {
   const { roleId } = useSelector((state) => state.ecommerce)

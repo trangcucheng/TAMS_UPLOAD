@@ -28,10 +28,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 // ** Styles
 import '@styles/react/libs/react-select/_react-select.scss'
 import Swal from 'sweetalert2'
-import { getCourse } from "../../../../api/course"
+import { getCourse } from "../../../../api_citation/course"
 import classNames from "classnames"
 import withReactContent from "sweetalert2-react-content"
-import { postFromExcel } from "../../../../api/document"
+import { postFromExcel } from "../../../../api_citation/document"
 import { getUserData } from "../../../../utility/Utils"
 
 const SelectCourseModal = ({ open, handleModal, getData }) => {
@@ -86,8 +86,6 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     }
 
     const handleChangeFile = (event) => {
-        event.preventDefault()
-
         const file = event.target.files[0]
 
         if (!file || !file.name.endsWith('.xlsx')) {
@@ -102,14 +100,17 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
             return
         }
 
+        // Nếu file không thay đổi, không gọi setFileExcel
         if (fileExcel !== file) {
             setFileExcel(file) // Lưu file vào state
         }
 
+        // Đọc file và xử lý sau đó
         readXlsxFile(file).then((rows) => {
             const temp = rows.slice(4) // Cắt mảng từ hàng bắt đầu
             setListImport(temp) // Lưu danh sách sau khi xử lý
             setModalImportFile(true) // Mở modal hiển thị kết quả import
+
         }).catch(error => {
             MySwal.fire({
                 icon: "error",
@@ -119,16 +120,17 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                     confirmButton: "btn btn-danger"
                 }
             })
+        }).finally(() => {
+            // Reset lại input file
+            if (fileInputRef.current) {
+                fileInputRef.current.value = undefined // Reset giá trị input
+            }
         })
-        //     .finally(() => {
-        //     if (fileInputRef.current) {
-        //         fileInputRef.current.value = undefined // Reset giá trị input
-        //     }
-        // })
     }
 
     const onSubmit = (data) => {
         setLoadingAdd(true)
+        // const files_ = files
         const formData = new FormData()
         formData.append('excel', fileExcel)
         formData.append('courseId', 1)
@@ -171,6 +173,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
     const handleChangeFolder = (event) => {
         const fileList = event.target.files
         const fileArray = Array.from(fileList)
+        // setValue('folder', fileArray) // Cập nhật giá trị vào form
 
         setFiles(fileArray)
 
@@ -182,12 +185,7 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
             folderInputRef.current.value = undefined // Reset giá trị input
         }
     }
-    const handleClickInput = () => {
-        // Reset giá trị của input file
-        if (fileInputRef.current) {
-            fileInputRef.current.value = null // Đặt giá trị về null để cho phép chọn lại tệp
-        }
-    }
+
     return (
         <Modal isOpen={open} toggle={handleCloseModal} className='modal-dialog-top modal-lg'>
             <ModalHeader className='bg-transparent' toggle={handleCloseModal}></ModalHeader>
@@ -215,7 +213,6 @@ const SelectCourseModal = ({ open, handleModal, getData }) => {
                                     value={undefined}
                                     placeholder='Chọn tài liệu'
                                     ref={fileInputRef}
-                                    onClick={handleClickInput} // Khi người dùng nhấn vào, reset giá trị
                                     invalid={errors.file && true} onChange={(event) => {
                                         handleChangeFile(event)
                                         field.onChange(event)

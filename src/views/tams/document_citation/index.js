@@ -27,11 +27,11 @@ import { useForm, Controller } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import classnames from "classnames"
 import { AbilityContext } from '@src/utility/context/Can'
-import { deleteDocument, getDocument } from "../../../api/document"
+import { deleteDocument, getDocument } from "../../../api_citation/document"
 import { toDateString, toDateStringv2, toDateTimeString } from "../../../utility/Utils"
-import { getCourse } from "../../../api/course"
-import { getDocumentType } from "../../../api/document_type"
-import { getMajor } from "../../../api/major"
+import { getCourse } from "../../../api_citation/course"
+import { getDocumentType } from "../../../api_citation/document_type"
+import { getMajor } from "../../../api_citation/major"
 import Flatpickr from "react-flatpickr"
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 import "@styles/react/libs/flatpickr/flatpickr.scss"
@@ -535,7 +535,7 @@ const Document = () => {
                     rowsPerPage={rowsPerPage}
                 />
             }
-        </Card >
+        </Card>
     )
 }
 

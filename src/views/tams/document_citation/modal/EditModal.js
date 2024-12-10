@@ -27,14 +27,14 @@ import '@styles/react/libs/react-select/_react-select.scss'
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 import "@styles/react/libs/flatpickr/flatpickr.scss"
 import Swal from 'sweetalert2'
-import { editDocument } from "../../../../api/document"
+import { editDocument } from "../../../../api_citation/document"
 import { useEffect, useState } from "react"
 import { Loader } from "react-feather"
-import { getMajor } from "../../../../api/major"
-import { getDocumentType } from "../../../../api/document_type"
+import { getMajor } from "../../../../api_citation/major"
+import { getDocumentType } from "../../../../api_citation/document_type"
 import classNames from "classnames"
 import { Spin } from "antd"
-import { getDocumentSource } from "../../../../api/document_source"
+import { getDocumentSource } from "../../../../api_citation/document_source"
 import { convertDateString, toDateStringv2 } from "../../../../utility/Utils"
 
 const EditDocument = ({ open, handleModal, infoEdit, getData }) => {

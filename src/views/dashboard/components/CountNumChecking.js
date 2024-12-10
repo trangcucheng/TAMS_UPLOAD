@@ -31,7 +31,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { DatePicker } from "antd"
 
 import dayjs from "dayjs"
-import { getCheckingDocumentStatisticByTime } from '../../../api/checking_document_statistic'
+import { getCheckingDocumentStatisticByTime } from '../../../api/document'
 import { toDateString, toDateStringv2 } from '../../../utility/Utils'
 
 const { RangePicker } = DatePicker

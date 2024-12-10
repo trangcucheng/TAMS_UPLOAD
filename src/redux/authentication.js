@@ -35,6 +35,8 @@ export const authSlice = createSlice({
       localStorage.removeItem('storagetime')
       localStorage.removeItem("infoLecture")
       localStorage.removeItem("userRoles")
+      localStorage.removeItem("userName")
+
       localStorage.removeItem(config.storageTokenKeyName)
       localStorage.removeItem(config.storageRefreshTokenKeyName)
     }

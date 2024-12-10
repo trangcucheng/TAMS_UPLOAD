@@ -7,7 +7,7 @@ function getAuthToken() {
 }
 
 const API_TAMS = axios.create({
-    baseURL: `${process.env.REACT_APP_API_URL_TAMS}/`,
+    baseURL: `${process.env.REACT_APP_API_URL_TAMS_TAILIEU}/`,
     headers: {
         // 'content-type':'multipart/form-data'
         'content-type': 'application/json'
