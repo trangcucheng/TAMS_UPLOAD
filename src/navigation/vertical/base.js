@@ -86,6 +86,15 @@ export default [
     resource: 'THONG_KE_TAI_LIEU_MAU',
     role: 0
   },
+  {
+    id: 'permissions',
+    title: 'QL tài khoản',
+    icon: <Users size={12} />,
+    navLink: '/tams/accounts',
+    action: 'read',
+    resource: 'QL_TAI_KHOAN',
+    role: 0
+  },
   // {
   //   header: "Quản lý danh mục",
   //   role: 0,

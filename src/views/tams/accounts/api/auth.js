@@ -12,7 +12,7 @@ export default class Auth {
         // this.removeToken()
         const refreshToken = window.localStorage.getItem('refreshToken')
         try {
-            const refreshRes = await axios.post(`${process.env.REACT_APP_API_URL}api/v1/auth/refresh-token`, { refreshToken })
+            const refreshRes = await axios.post(`${process.env.REACT_APP_API_URL}api/v1/auth/refresh-token`, {refreshToken})
             const newToken = refreshRes?.data?.accessToken
             if (!newToken) {
                 return false

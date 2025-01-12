@@ -3,6 +3,7 @@ import { lazy } from 'react'
 const Document = lazy(() => import('../../views/tams/document'))
 const Document_Citation = lazy(() => import('../../views/tams/document_citation'))
 const DocumentStatistic = lazy(() => import('../../views/tams/document_statistic'))
+const Accounts = lazy(() => import('../../views/tams/accounts'))
 // const CheckingDocument = lazy(() => import('../../views/tams/checking_document'))
 // const CheckingSpecialized = lazy(() => import('../../views/tams/checking_specialized'))
 // const CheckingDocumentResult = lazy(() => import('../../views/tams/checking_document/CheckingResult'))
@@ -25,10 +26,10 @@ const TamsRoutes = [
         path: '/tams/document-statistic',
         element: <DocumentStatistic />
     },
-    // {
-    //     path: '/tams/checking-document',
-    //     element: <CheckingDocument />
-    // },
+    {
+        path: '/tams/accounts',
+        element: <Accounts />
+    },
     // {
     //     path: '/tams/checking-specialized',
     //     element: <CheckingSpecialized />
