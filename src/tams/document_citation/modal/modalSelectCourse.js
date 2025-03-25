@@ -28,10 +28,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 // ** Styles
 import '@styles/react/libs/react-select/_react-select.scss'
 import Swal from 'sweetalert2'
-import { getCourse } from "../../../../api/course"
+import { getCourse } from "../../../../api_citation/course"
 import classNames from "classnames"
 import withReactContent from "sweetalert2-react-content"
-import { postFromExcel } from "../../../../api/document"
+import { postFromExcel } from "../../../../api_citation/document"
 import { getUserData } from "../../../../utility/Utils"
 
 const SelectCourseModal = ({ open, handleModal, getData }) => {

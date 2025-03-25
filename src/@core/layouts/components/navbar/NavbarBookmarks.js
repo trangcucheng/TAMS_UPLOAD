@@ -1,231 +1,168 @@
 // ** React Imports
-import { Link } from 'react-router-dom'
-import { Fragment, useEffect, useState } from 'react'
+import { Link, useNavigate } from "react-router-dom"
+import { useEffect, Fragment, useState, useContext } from "react"
+import { getHomeRouteForLoggedInUser } from "../../../../utility/Utils"
 
 // ** Third Party Components
-import * as Icon from 'react-feather'
-import classnames from 'classnames'
-
-// ** Custom Component
-import Autocomplete from '@components/autocomplete'
+import InputNumber from "rc-input-number"
+import PerfectScrollbar from "react-perfect-scrollbar"
+import * as IconReact from "react-feather"
+const { ShoppingCart, X, Plus, Minus, Grid, Star, Heart } = IconReact
 
 // ** Reactstrap Imports
 import {
-  NavItem,
-  NavLink,
+  Dropdown,
   DropdownMenu,
-  DropdownItem,
   DropdownToggle,
+  DropdownItem,
+  Badge,
+  Button,
+  NavLink,
+  Card,
+  CardBody,
+  Row,
+  Col,
+  CardText,
   UncontrolledTooltip,
-  UncontrolledDropdown
-} from 'reactstrap'
-
+} from "reactstrap"
+import classnames from "classnames"
 // ** Store & Actions
-import { useDispatch, useSelector } from 'react-redux'
-import { getBookmarks, updateBookmarked, handleSearchQuery } from '@store/navbar'
-
-const NavbarBookmarks = props => {
-  // ** Props
-  const { setMenuVisibility } = props
+import { useDispatch, useSelector } from "react-redux"
+import {
+  getCartItems,
+  deleteCartItem,
+  getProduct,
+} from "@src/views/apps/ecommerce/store"
+import ListFunctions from "@src/navigation/functions.js"
+import style from "@src/assets/scss/index.module.scss"
+import { setSelectedRole } from "../../../../views/apps/ecommerce/store"
+// ** Styles
+import "@styles/react/libs/input-number/input-number.scss"
+import navigation from '@src/navigation/vertical'
+import menuIcon from "@src/assets/images/icons/menu.png"
+import { AbilityContext } from '@src/utility/context/Can'
+const CartDropdown = () => {
+  const ability = useContext(AbilityContext)
 
   // ** State
-  const [value, setValue] = useState('')
-  const [openSearch, setOpenSearch] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [show, setShow] = useState(false)
 
   // ** Store Vars
   const dispatch = useDispatch()
-  const store = useSelector(state => state.navbar)
-
+  const store = useSelector((state) => state.ecommerce)
+  const { roleId } = useSelector((state) => state.ecommerce)
+  const navigate = useNavigate()
   // ** ComponentDidMount
   useEffect(() => {
-    dispatch(getBookmarks())
+    dispatch(getCartItems())
   }, [])
+  const userData = JSON.parse(localStorage.getItem("userData"))
+  const listRoles = userData?.listRoles ?? []
+  // ** Function to toggle Dropdown
+  const toggle = () => setDropdownOpen((prevState) => !prevState)
 
-  // ** Loops through Bookmarks Array to return Bookmarks
-  const renderBookmarks = () => {
-    if (store.bookmarks.length) {
-      return store.bookmarks
-        .map(item => {
-          const IconTag = Icon[item.icon]
-          return (
-            <NavItem key={item.target} className='d-none d-lg-block'>
-              <NavLink tag={Link} to={item.link} id={item.target}>
-                <IconTag className='ficon' />
-                <UncontrolledTooltip target={item.target}>{item.title}</UncontrolledTooltip>
-              </NavLink>
-            </NavItem>
-          )
-        })
-        .slice(0, 10)
-    } else {
-      return null
-    }
+  // ** Function to call on Dropdown Item Click
+  const handleDropdownItemClick = (id) => {
+    dispatch(getProduct(id))
+    toggle()
   }
+  const handleClickRole = (key) => {
+    // dispatch(setSelectedRole(key))
+    // const routeItem = navigation.find(x => x.role === key)
+    // if (routeItem && routeItem.children) {
+    //   const children = routeItem.children
+    //   if (children && children[0]?.children) {
+    //     navigate(children[0]?.children[0]?.navLink)
+    //   } else {
+    //     navigate(routeItem.children[0]?.navLink)
+    //   }
+    // } else {
+    //   navigate(routeItem?.navLink ?? getHomeRouteForLoggedInUser('admin'))
+    // }
+    navigate(key)
 
-  // ** If user has more than 10 bookmarks then add the extra Bookmarks to a dropdown
-  const renderExtraBookmarksDropdown = () => {
-    if (store.bookmarks.length && store.bookmarks.length >= 11) {
-      return (
-        <NavItem className='d-none d-lg-block'>
-          <NavLink tag='span'>
-            <UncontrolledDropdown>
-              <DropdownToggle tag='span'>
-                <Icon.ChevronDown className='ficon' />
-              </DropdownToggle>
-              <DropdownMenu end>
-                {store.bookmarks
-                  .map(item => {
-                    const IconTag = Icon[item.icon]
-                    return (
-                      <DropdownItem tag={Link} to={item.link} key={item.id}>
-                        <IconTag className='me-50' size={14} />
-                        <span className='align-middle'>{item.title}</span>
-                      </DropdownItem>
-                    )
-                  })
-                  .slice(10)}
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </NavLink>
-        </NavItem>
-      )
-    } else {
-      return null
-    }
   }
-
-  // ** Removes query in store
-  const handleClearQueryInStore = () => dispatch(handleSearchQuery(''))
-
-  // ** Loops through Bookmarks Array to return Bookmarks
-  const onKeyDown = e => {
-    if (e.keyCode === 27 || e.keyCode === 13) {
-      setTimeout(() => {
-        setOpenSearch(false)
-        handleClearQueryInStore()
-      }, 1)
-    }
-  }
-
-  // ** Function to toggle Bookmarks
-  const handleBookmarkUpdate = id => dispatch(updateBookmarked(id))
-
-  // ** Function to handle Bookmarks visibility
-  const handleBookmarkVisibility = () => {
-    setOpenSearch(!openSearch)
-    setValue('')
-    handleClearQueryInStore()
-  }
-
-  // ** Function to handle Input change
-  const handleInputChange = e => {
-    setValue(e.target.value)
-    dispatch(handleSearchQuery(e.target.value))
-  }
-
-  // ** Function to handle external Input click
-  const handleExternalClick = () => {
-    if (openSearch === true) {
-      setOpenSearch(false)
-      handleClearQueryInStore()
-    }
-  }
-
-  // ** Function to clear input value
-  const handleClearInput = setUserInput => {
-    if (!openSearch) {
-      setUserInput('')
-      handleClearQueryInStore()
-    }
+  // ** Loops through Cart Array to return Cart Items
+  const renderMenuItems = () => {
+    return (
+      <div className="grid-view" style={{ padding: '0 1rem' }}>
+        {listRoles?.map((item, index) => {
+      
+            const IconTag = IconReact[item.icon]
+            return (
+              <div className="subContainer">
+                <Card className="ecommerce-card subSystem" key={item.id} onClick={(e) => {
+                  handleClickRole(item?.description)
+                  //  setShow(!show)
+                  toggle()
+                }}>
+                  <div
+                    className="item-img text-center mx-auto"
+                    style={{ minHeight: "60px", paddingTop: '0rem' }}
+                  >
+                    <Link className="iconContainer" to={item.navLink}><IconTag className="font-large-1" style={{ stroke: "#09A863" }} /></Link>
+                  </div>
+                </Card>
+                <h6 className="item-name" style={{ marginBottom: '0.5rem', textAlign: 'center' }}>
+                  <Link className="" to={item.navLink} style={{ justifyContent: 'center', marginTop: '0.75rem', fontSize: '15px' }}>
+                    {item.title}
+                  </Link>
+                </h6>
+              </div>
+            )
+        
+        })}
+      </div>
+    )
   }
 
   return (
-    <Fragment>
-      <ul className='navbar-nav d-xl-none'>
-        <NavItem className='mobile-menu me-auto'>
-          <NavLink className='nav-menu-main menu-toggle hidden-xs is-active' onClick={() => setMenuVisibility(true)}>
-            <Icon.Menu className='ficon' />
-          </NavLink>
-        </NavItem>
-      </ul>
-      {/* <ul className='nav navbar-nav bookmark-icons'>
-        {renderBookmarks()}
-        {renderExtraBookmarksDropdown()}
-        <NavItem className='nav-item d-none d-lg-block'>
-          <NavLink className='bookmark-star' onClick={handleBookmarkVisibility}>
-            <Icon.Star className='ficon text-warning' />
-          </NavLink>
-          <div className={classnames('bookmark-input search-input', { show: openSearch })}>
-            <div className='bookmark-input-icon'>
-              <Icon.Search size={14} />
-            </div>
-            {openSearch && store.suggestions.length ? (
-              <Autocomplete
-                wrapperClass={classnames('search-list search-list-bookmark', {
-                  show: openSearch
-                })}
-                className='form-control'
-                suggestions={!value.length ? store.bookmarks : store.suggestions}
-                filterKey='title'
-                autoFocus={true}
-                defaultSuggestions
-                suggestionLimit={!value.length ? store.bookmarks.length : 6}
-                placeholder='Search...'
-                externalClick={handleExternalClick}
-                clearInput={(userInput, setUserInput) => handleClearInput(setUserInput)}
-                onKeyDown={onKeyDown}
-                value={value}
-                onChange={handleInputChange}
-                customRender={(
-                  item,
-                  i,
-                  filteredData,
-                  activeSuggestion,
-                  onSuggestionItemClick,
-                  onSuggestionItemHover
-                ) => {
-                  const IconTag = Icon[item.icon ? item.icon : 'X']
-                  return (
-                    <li
-                      key={i}
-                      onMouseEnter={() => onSuggestionItemHover(filteredData.indexOf(item))}
-                      className={classnames('suggestion-item d-flex align-items-center justify-content-between', {
-                        active: filteredData.indexOf(item) === activeSuggestion
-                      })}
-                    >
-                      <Link
-                        to={item.link}
-                        className='d-flex align-items-center justify-content-between p-0'
-                        onClick={() => {
-                          setOpenSearch(false)
-                          handleClearQueryInStore()
-                        }}
-                        style={{
-                          width: 'calc(90%)'
-                        }}
-                      >
-                        <div className='d-flex justify-content-start align-items-center overflow-hidden'>
-                          <IconTag size={17.5} className='me-75' />
-                          <span className='text-truncate'>{item.title}</span>
-                        </div>
-                      </Link>
-                      <Icon.Star
-                        size={17.5}
-                        className={classnames('bookmark-icon float-end', {
-                          'text-warning': item.isBookmarked
-                        })}
-                        onClick={() => handleBookmarkUpdate(item.id)}
-                      />
-                    </li>
-                  )
-                }}
-              />
-            ) : null}
-          </div>
-        </NavItem>
-      </ul> */}
-    </Fragment>
+    <Dropdown
+      isOpen={dropdownOpen}
+      toggle={toggle}
+      tag="li"
+      className="dropdown-cart nav-item me-25"
+    >
+      <DropdownToggle tag="a" className="nav-link position-relative"
+      // onClick={(e) => setShow(!show)}
+      >
+        {/* <Grid className="ficon" id="menu_tooltip" /> */}
+        <img src={menuIcon} id="menu_tooltip" style={{ width: '30px', cursor: 'pointer' }} />
+        {/* {store.cart.length > 0 ? (
+          <Badge pill color='primary' className='badge-up'>
+            {store.cart.length}
+          </Badge>
+        ) : null} */}
+        <UncontrolledTooltip target="menu_tooltip">
+          Danh sách chức năng
+        </UncontrolledTooltip>
+      </DropdownToggle>
+      <DropdownMenu
+        end
+        tag="ul"
+        className="dropdown-menu-media dropdown-cart mt-0 shadow-box customMenu"
+      >
+        <li
+          className="dropdown-menu-header"
+          style={{ backgroundColor: "white" }}
+        >
+          <DropdownItem tag="div" className="d-flex" header>
+            <h5
+              className="notification-title mb-0 me-auto"
+              style={{ textAlign: "center", width: "100%", fontWeight: 'bolder' }}
+            >
+              DANH SÁCH CHỨC NĂNG
+            </h5>
+            {/* <Badge color='light-primary' pill>
+              {store.cart.length || 0} Items
+            </Badge> */}
+          </DropdownItem>
+        </li>
+        <div className="ecommerce-application">{renderMenuItems()}</div>
+      </DropdownMenu>
+    </Dropdown>
   )
 }
 
-export default NavbarBookmarks
+export default CartDropdown

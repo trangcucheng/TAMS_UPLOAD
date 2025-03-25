@@ -6,7 +6,7 @@ function getAuthToken() {
     return window.localStorage.getItem("accessToken") ?? ""
 }
 
-const API_PQ = axios.create({
+const API = axios.create({
     baseURL: `${process.env.REACT_APP_API_URL}api/v1`,
     headers: {
         // 'content-type':'multipart/form-data'
@@ -15,7 +15,7 @@ const API_PQ = axios.create({
     paramsSerializer: params => queryString.stringify(params)
 })
 
-API_PQ.interceptors.request.use(async (config) => {
+API.interceptors.request.use(async (config) => {
     //hanlde tooken...
     config.headers = {
         ...(config.headers ?? {}),
@@ -24,7 +24,7 @@ API_PQ.interceptors.request.use(async (config) => {
     return { ...config }
 })
 
-API_PQ.interceptors.response.use((response) => {
+API.interceptors.response.use((response) => {
     if (response && response.data) {
         return response.data
     }
@@ -37,7 +37,7 @@ API_PQ.interceptors.response.use((response) => {
     if (status === 401) {
         return Auth.refreshToken().then(res => {
             error.config.headers['Authorization'] = `Bearer ${getAuthToken()}`
-            return API_PQ(error.config)
+            return API(error.config)
         })
     }
     if (status === 408) {
@@ -47,4 +47,4 @@ API_PQ.interceptors.response.use((response) => {
     return Promise.reject(error)
 })
 
-export { API_PQ }
+export { API }
