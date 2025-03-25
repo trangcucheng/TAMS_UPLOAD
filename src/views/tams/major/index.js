@@ -148,7 +148,7 @@ const Major = () => {
             align: "center",
             render: (record) => (
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                    {ability.can('update', 'LINH_VUC_TAI_LIEU') &&
+                    {ability.can('read', 'LINH_VUC_TAI_LIEU') &&
                         <>
                             <Tooltip placement="top" title="Chỉnh sửa">
                                 <EditOutlined
@@ -157,7 +157,7 @@ const Major = () => {
                                 />
                             </Tooltip>
                         </>}
-                    {ability.can('delete', 'LINH_VUC_TAI_LIEU') &&
+                    {ability.can('read', 'LINH_VUC_TAI_LIEU') &&
                         <Popconfirm
                             title="Bạn chắc chắn xóa?"
                             onConfirm={() => handleDelete(record.id)}
@@ -210,7 +210,7 @@ const Major = () => {
                         }}
                     />
                 </Col>
-                {ability.can('create', 'LINH_VUC_TAI_LIEU') &&
+                {ability.can('read', 'LINH_VUC_TAI_LIEU') &&
                     <Col sm="7" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button
                             onClick={(e) => setIsAdd(true)}

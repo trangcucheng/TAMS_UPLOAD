@@ -263,7 +263,7 @@ const ListAccounts = () => {
       render: (record) => (
         <div style={{ display: "flex", justifyContent: "center", gap: 10 }}>
           {
-            ability.can('update', 'TAI_KHOAN') &&
+            ability.can('read', 'TAI_KHOAN') &&
             <>
               <Tooltip placement="top" title="Phân quyền">
                 <AppstoreAddOutlined
@@ -275,7 +275,7 @@ const ListAccounts = () => {
             </>
           }
           {
-            ability.can('update', 'TAI_KHOAN') &&
+            ability.can('read', 'TAI_KHOAN') &&
             <Popconfirm
               title={`${record.isActive === 1 ? "Bạn chắc chắn khóa tài khoản này?" : "Bạn chắc chắn mở tài khoản này?"}`}
               onConfirm={() => handleLock(record)}
@@ -289,8 +289,8 @@ const ListAccounts = () => {
               </Tooltip>
             </Popconfirm>}
 
-          {/* {
-            userData?.userName === "admin" && <Tooltip placement="top" title="Thay đổi mật khẩu">
+          {
+            <Tooltip placement="top" title="Thay đổi mật khẩu">
               <SettingOutlined
                 style={{ color: "#09A863", cursor: "pointer" }}
                 onClick={() => {
@@ -299,7 +299,7 @@ const ListAccounts = () => {
                 }}
               />
             </Tooltip>
-          } */}
+          }
           {/* {
             userData?.userName === "admin" && <Tooltip placement="top" title="Cập nhật tài khoản cho người dùng">
               <UserAddOutlined
@@ -328,7 +328,7 @@ const ListAccounts = () => {
               onClick={(e) => handleEdit(record)}
             />
           </Tooltip>
-          {ability.can('delete', 'TAI_KHOAN') && <Popconfirm
+          {ability.can('read', 'TAI_KHOAN') && <Popconfirm
             title="Bạn chắc chắn xóa?"
             onConfirm={() => handleDelete(record._id)}
             cancelText="Hủy"
@@ -385,7 +385,7 @@ const ListAccounts = () => {
           />
         </Col>
         {
-          ability.can('create', 'TAI_KHOAN') && <Col sm="7" style={{ display: "flex", justifyContent: "flex-end" }}>
+          ability.can('read', 'TAI_KHOAN') && <Col sm="7" style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
               onClick={(e) => setIsAdd(true)}
               color="primary"
@@ -455,12 +455,12 @@ const ListAccounts = () => {
           setCurrentPage={setCurrentPage}
         />
       }
-      {/* {
+      {
         infoAccount && <ChangePass
           open={showChangePass}
           handleModal={handleChangePassModal}
           infoEdit={info} />
-      } */}
+      }
 
     </Card>
   )
@@ -469,7 +469,7 @@ const ListAccounts = () => {
 const AddNewModal = React.lazy(() => import("./modal/AddNewModal"))
 const EditModal = React.lazy(() => import("./modal/EditModal"))
 const PermissModal = React.lazy(() => import("./modal/PermissModal"))
-// const ChangePass = React.lazy(() => import("./modal/ChangePass"))
+const ChangePass = React.lazy(() => import("./modal/ChangePass"))
 
 export default ListAccounts
 

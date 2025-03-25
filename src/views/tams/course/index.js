@@ -218,7 +218,7 @@ const Course = () => {
             render: (record) => (
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     {
-                        ability.can('update', 'TAI_KHOAN') &&
+                        ability.can('read', 'TAI_KHOAN') &&
                         <Popconfirm
                             title={`${record.isActive === 1 ? "Bạn chắc chắn khóa đợt kiểm tra này?" : "Bạn chắc chắn mở đợt kiểm tra này?"}`}
                             onConfirm={() => handleIsActive(record.id)}
@@ -238,7 +238,7 @@ const Course = () => {
                             }
                         </Popconfirm>
                     }
-                    {ability.can('update', 'DOT_KIEM_TRA') &&
+                    {ability.can('read', 'DOT_KIEM_TRA') &&
                         <>
 
                             <Tooltip placement="top" title="Kiểm tra trong khóa" >
@@ -248,7 +248,7 @@ const Course = () => {
                                 />
                             </Tooltip>
                         </>}
-                    {ability.can('update', 'DOT_KIEM_TRA') &&
+                    {ability.can('read', 'DOT_KIEM_TRA') &&
                         <>
                             <Tooltip placement="top" title="Chỉnh sửa" >
                                 <EditOutlined
@@ -257,7 +257,7 @@ const Course = () => {
                                 />
                             </Tooltip>
                         </>}
-                    {ability.can('delete', 'DOT_KIEM_TRA') &&
+                    {ability.can('read', 'DOT_KIEM_TRA') &&
                         <Popconfirm
                             title="Bạn chắc chắn xóa?"
                             onConfirm={() => handleDelete(record.id)}
@@ -332,7 +332,7 @@ const Course = () => {
                         />
                     </Col>
                 </Col>
-                {ability.can('create', 'DOT_KIEM_TRA') &&
+                {ability.can('read', 'DOT_KIEM_TRA') &&
                     <Col sm="4" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button
                             onClick={(e) => setIsAdd(true)}

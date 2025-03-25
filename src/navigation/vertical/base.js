@@ -92,7 +92,7 @@ export default [
     icon: <Users size={12} />,
     navLink: '/tams/accounts',
     action: 'read',
-    resource: 'QL_TAI_KHOAN',
+    resource: 'TAI_KHOAN',
     role: 0
   },
   // {

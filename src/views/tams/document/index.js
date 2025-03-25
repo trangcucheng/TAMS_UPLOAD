@@ -44,6 +44,9 @@ const { RangePicker } = DatePicker
 
 const Document = () => {
     const [loadingData, setLoadingData] = useState(false)
+
+    const userLocal = JSON.parse(localStorage.getItem('userData'))
+
     const ability = useContext(AbilityContext)
     const MySwal = withReactContent(Swal)
     const [data, setData] = useState([])
@@ -127,7 +130,8 @@ const Document = () => {
                 ...(typeIds && { typeIds }),
                 ...(majorIds && { majorIds }),
                 ...(startDate && { startDate }),
-                ...(endDate && { endDate })
+                ...(endDate && { endDate }),
+                createdById: userLocal?.userName,
             },
         })
             .then((res) => {
@@ -285,12 +289,12 @@ const Document = () => {
         },
 
         {
-            title: "Mô tả",
-            dataIndex: "description",
+            title: "Người tải",
+            dataIndex: "createdById",
             align: 'left',
             width: 200,
             render: (text, record, index) => (
-                <span style={{ whiteSpace: 'break-spaces' }}>{record.description}</span>
+                <span style={{ whiteSpace: 'break-spaces' }}>{record.createdById}</span>
             ),
         },
         {
@@ -308,7 +312,7 @@ const Document = () => {
             align: "center",
             render: (record) => (
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                    {ability.can('update', 'QL_KHO_TAI_LIEU_MAU') &&
+                    {ability.can('read', 'QL_KHO_TAI_LIEU_MAU') &&
                         <>
                             <Tooltip placement="top" title="Chỉnh sửa">
                                 <EditOutlined
@@ -318,7 +322,7 @@ const Document = () => {
                                 />
                             </Tooltip>
                         </>}
-                    {ability.can('delete', 'QL_KHO_TAI_LIEU_MAU') &&
+                    {ability.can('read', 'QL_KHO_TAI_LIEU_MAU') &&
                         <Popconfirm
                             title="Bạn chắc chắn xóa?"
                             onConfirm={() => handleDelete(record.id)}
@@ -449,7 +453,7 @@ const Document = () => {
 
                 </Col>
                 <Col sm="4" style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", marginBottom: '8px' }}>
-                    {ability.can('create', 'QL_KHO_TAI_LIEU_MAU') && <Col
+                    {ability.can('read', 'QL_KHO_TAI_LIEU_MAU') && <Col
                         sm="12"
                         style={{ display: "flex", justifyContent: "flex-end" }}
                     >
@@ -468,7 +472,7 @@ const Document = () => {
                                 <DropdownItem className='w-100' onClick={(e) => setIsAdd(true)}>
                                     <span className='align-middle ms-50'>Thêm mới tài liệu mẫu</span>
                                 </DropdownItem>
-                                {/* {ability.can('create', 'QL_KHO_TAI_LIEU_MAU') && <Col
+                                {/* {ability.can('read', 'QL_KHO_TAI_LIEU_MAU') && <Col
                                     sm="6"
                                     style={{ display: "flex", justifyContent: "flex-end" }}
                                 >

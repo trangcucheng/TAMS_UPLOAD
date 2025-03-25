@@ -88,7 +88,7 @@ const CartDropdown = () => {
     return (
       <div className="grid-view" style={{ padding: '0 1rem' }}>
         {listRoles?.map((item, index) => {
-          if (ability.can(item.action, item.resource)) {
+      
             const IconTag = IconReact[item.icon]
             return (
               <div className="subContainer">
@@ -111,7 +111,7 @@ const CartDropdown = () => {
                 </h6>
               </div>
             )
-          } else return null
+        
         })}
       </div>
     )

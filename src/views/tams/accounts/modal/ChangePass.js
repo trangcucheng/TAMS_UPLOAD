@@ -33,7 +33,7 @@ import {
 import Spinner from '@components/spinner/Loading-spinner'
 /** Constants */
 /** API */
-import { changePass } from '../../../../../api_tams/authentication'
+import { changePass } from '../api/authentication'
 
 const ChangePass = ({ open, handleModal, infoEdit }) => {
     const MySwal = withReactContent(Swal)

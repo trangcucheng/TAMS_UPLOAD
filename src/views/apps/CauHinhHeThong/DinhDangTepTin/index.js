@@ -224,7 +224,7 @@ const DinhDangTepTin = () => {
             render: (record) => (
                 <div style={{ display: "flex", justifyContent: "space-around" }}>
                     {
-                        ability.can('update', "DM_GIOI_TINH") && <>
+                        ability.can('read', "DM_GIOI_TINH") && <>
                             <EditOutlined
                                 id={`tooltip_edit${record.ID}`}
                                 style={{ color: "#09A863", cursor: 'pointer' }}
@@ -236,7 +236,7 @@ const DinhDangTepTin = () => {
 
                     }
                     {
-                        ability.can('delete', "DM_GIOI_TINH") && <Popconfirm
+                        ability.can('read', "DM_GIOI_TINH") && <Popconfirm
                             title="Bạn chắc chắn xóa?"
                             onConfirm={() => handleDelete(record.ID)}
                             cancelText="Hủy"
@@ -295,7 +295,7 @@ const DinhDangTepTin = () => {
                 </Col>
                 <Col sm="7" style={{ display: "flex", justifyContent: "flex-end" }}>
                     {
-                        ability.can('create', "DM_NGANH") && <Button
+                        ability.can('read', "DM_NGANH") && <Button
                             onClick={(e) => {
                                 setAction('Add')
                                 setIsAdd(true)

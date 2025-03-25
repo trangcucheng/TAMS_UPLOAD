@@ -147,7 +147,7 @@ const DocumentSource = () => {
             align: "center",
             render: (record) => (
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                    {ability.can('update', 'NGUON_TAI_LIEU') &&
+                    {ability.can('read', 'NGUON_TAI_LIEU') &&
                         <>
                             <Tooltip placement="top" title="Chỉnh sửa">
                                 <EditOutlined
@@ -156,7 +156,7 @@ const DocumentSource = () => {
                                 />
                             </Tooltip>
                         </>}
-                    {ability.can('delete', 'NGUON_TAI_LIEU') &&
+                    {ability.can('read', 'NGUON_TAI_LIEU') &&
                         <Popconfirm
                             title="Bạn chắc chắn xóa?"
                             onConfirm={() => handleDelete(record.id)}
@@ -209,7 +209,7 @@ const DocumentSource = () => {
                         }}
                     />
                 </Col>
-                {ability.can('create', 'NGUON_TAI_LIEU') &&
+                {ability.can('read', 'NGUON_TAI_LIEU') &&
                     <Col sm="7" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button
                             onClick={(e) => setIsAdd(true)}
